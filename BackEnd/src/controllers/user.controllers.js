@@ -21,11 +21,12 @@ const generateAccessAndRefreshTokens=async(userId)=>{
         throw new ApiError(500,"Something went wrong while generating refresh and access token ")
     }
 }
+
 const registerUser = asyncHandler( async (req, res) => {
 
     const {fullName, email, username, password } = req.body
-    //console.log("email: ", email);
-
+    console.log("email: ", email);
+    
     if (
         [fullName, email, username, password].some((field) => field?.trim() === "")
     ) {
@@ -39,8 +40,7 @@ const registerUser = asyncHandler( async (req, res) => {
     if (existedUser) {
         throw new ApiError(409, "User with email or username already exists")
     }
-    //console.log(req.files);
-
+    console.log(req.files);
     let avatarLocalPath = req.files?.avatar[0]?.path;
     //const coverImageLocalPath = req.files?.coverImage[0]?.path;
     console.log("avatarLocalPath",avatarLocalPath)
@@ -158,7 +158,7 @@ const logoutUser=asyncHandler(async(req,res)=>{
 
 const refreshAccessToken=asyncHandler(async(req,res)=>{
      const incomingRefreshToken=req.cookies.refreshToken||req.body.refreshToken
-
+    console.log(incomingRefreshToken)
      if(!incomingRefreshToken){
         throw new ApiError(401,"Unauthorized request")
      }
@@ -168,7 +168,8 @@ const refreshAccessToken=asyncHandler(async(req,res)=>{
          process.env.REFRESH_TOKEN_SECRET
          )
      const user=await User.findById(decodedToken?._id)
- 
+    console.log("decodedToken",decodedToken)
+    console.log("user",user)
      if(!user){
          throw new ApiError(401,"Invaild REFRESH TOKEN ")
       }
@@ -182,7 +183,7 @@ const refreshAccessToken=asyncHandler(async(req,res)=>{
          secure:true
       }
  
-       const {accessToken,newrefreshToken}=await generateAccessAndRefreshTokens(user._ib)
+       const {accessToken,newrefreshToken}=await generateAccessAndRefreshTokens(user._id)
  
       return res.status(200)
       .cookie("accessToken",accessToken,option)
@@ -192,6 +193,7 @@ const refreshAccessToken=asyncHandler(async(req,res)=>{
              , "Access token refreshed")
       )
    } catch (error) {
+    console.log(error)
     throw new ApiError(401,error?.message|| "Invaild refresh token")
    }
 
@@ -221,12 +223,12 @@ const getCurrentUser=asyncHandler(async(req,res)=>{
 })
 
 const updateAccountDetails= asyncHandler(async(req,res)=>{
-    const {fullName,email}=req.user
+   const {fullName, email} = req.body
 
-    if(!fullName || !email){
-        throw new ApiError(400,"All fileds are required")
+    if (!fullName || !email) {
+        throw new ApiError(400, "All fields are required")
     }
-    const user=User.findByIdAndUpdate(
+    const user=await User.findByIdAndUpdate(
         req.user?._id,
         {
             $set:{
@@ -236,7 +238,6 @@ const updateAccountDetails= asyncHandler(async(req,res)=>{
         },
         {new:true}
         ).select("-password")
-
         return res.status(200)
         .json(new ApiResponse(200,user,"Account details updated successfully"))
 
