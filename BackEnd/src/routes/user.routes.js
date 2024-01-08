@@ -1,7 +1,17 @@
 import { Router } from "express";
-import { changeCurrentPassword, getCurrentUser, getUserChannelProfile, getWatchHistory, loginUser, logoutUser, refreshAccessToken, registerUser, updateAccountDetails, updateUserAvatar, updateUsercoverImage } from "../controllers/user.controllers.js";
-import {upload} from "../middlewares/multer.middlewares.js"
-import { verifyJWt } from "../middlewares/auth.middleware.js";
+import { changeCurrentPassword, 
+        getCurrentUser,
+        getUserChannelProfile, 
+        getWatchHistory,
+        loginUser,
+        logoutUser,
+        refreshAccessToken, 
+        registerUser,
+        updateAccountDetails, 
+        updateUserAvatar, 
+        updateUsercoverImage } from "../controllers/user.controller.js";
+import {upload} from "../middlewares/multer.middleware.js"
+import { verifyJWT} from "../middlewares/auth.middleware.js";
 const router = Router()
 
 router.route("/register").post(
@@ -21,14 +31,14 @@ router.route("/login").post(loginUser)
 
 //secured router
 
-router.route("/logout").post(verifyJWt , logoutUser)
+router.route("/logout").post(verifyJWT , logoutUser)
 router.route("/refresh-token").post(refreshAccessToken)
-router.route("/change-password").post(verifyJWt,changeCurrentPassword)
-router.route("/current-user").get(verifyJWt,getCurrentUser)
-router.route("/update-account").patch(verifyJWt,updateAccountDetails)
-router.route("/avatar").patch(verifyJWt,upload.single("avatar"),updateUserAvatar)
-router.route("/cover-image").patch(verifyJWt,upload.single("coverImage"),updateUsercoverImage)
-router.route("/c/:username").get(verifyJWt,getUserChannelProfile)
-router.route("/history").get(verifyJWt,getWatchHistory)
+router.route("/change-password").post(verifyJWT,changeCurrentPassword)
+router.route("/current-user").get(verifyJWT,getCurrentUser)
+router.route("/update-account").patch(verifyJWT,updateAccountDetails)
+router.route("/avatar").patch(verifyJWT,upload.single("avatar"),updateUserAvatar)
+router.route("/cover-image").patch(verifyJWT,upload.single("coverImage"),updateUsercoverImage)
+router.route("/c/:username").get(verifyJWT,getUserChannelProfile)
+router.route("/history").get(verifyJWT,getWatchHistory)
 
 export default router
