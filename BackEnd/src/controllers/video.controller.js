@@ -10,16 +10,87 @@ import {uploadOnCloudinary} from "../utils/cloudinary.js"
 const getAllVideos = asyncHandler(async (req, res) => {
     const { page = 1, limit = 10, query, sortBy, sortType, userId } = req.query
     //TODO: get all videos based on query, sort, pagination
+    //sorting is pending
+    let sortOptions={}
+    let basequery={}
+
+    if(sortBy){
+        sortOptions[sortBy] = sortType == "desc" ? -1 : 1;
+    }
+    if(query){
+        basequery.$or=[
+            {title:{$regex : query,$options:"i"}},
+            {description:{$regex:query,$options:"i"}}
+        ];;
+    }
+
+    try {
+        const result= await Video.aggregate([
+            {
+                $match: {
+                  $or: [
+                    basequery, // This is assuming basequery is already an object with your $or conditions
+                    { owner: new mongoose.Types.ObjectId(userId) },
+                  ],
+                },
+              },
+            // {
+            //   $sort:sortOptions  
+            // },
+            {
+                $skip:(page-1)*limit
+            },
+            {
+                $limit:parseInt(limit)
+            },
+        ])
+        console.log(result)
+        return res.status(200)
+        .json(new ApiResponse(200,result,"Success"))
+        
+    } catch (error) {
+        throw new ApiError(500,`something went wrong to get video  ||  ${error.message}`)
+    }
 })
 
 const publishAVideo = asyncHandler(async (req, res) => {
     const { title, description} = req.body
     // TODO: get video, upload to cloudinary, create video
-})
+    const videoLocalPath=await req.files?.videoFile[0]?.path
+    const thumbnailLocalPath=await req.files?.thumbnail[0]?.path
+
+    if (!videoLocalPath && !thumbnailLocalPath){
+        throw new ApiError(400,"video and thumnail is required")
+    }
+    const uploadTocloudVideo= await uploadOnCloudinary(videoLocalPath)
+    const uploadTocloudthumbnail= await uploadOnCloudinary(thumbnailLocalPath)
+    // console.log(uploadTocloudVideo)
+    // console.log(uploadTocloudthumbnail)
+    if(!uploadTocloudVideo && !uploadTocloudthumbnail){
+        throw new ApiError(500 ,"something went wrong while uploading the video and thumnail ")
+    }
+
+    const video= await Video.create({
+        videoFile:uploadTocloudVideo.url,
+        thumbnail:uploadTocloudthumbnail.url,
+        title,
+        description,
+        duration:uploadTocloudVideo.duration,
+        owner:req.user?._id,
+        //add the cloudnary video_id and thumbnail_id to delete and update 
+    })
+    if(!video){
+        throw new ApiError(500,"something went wrong while creating document in DB ")
+    }
+    return res.status(200)
+    .json(new ApiResponse(200,video,"success video is upladed"))
+})  
+
 
 const getVideoById = asyncHandler(async (req, res) => {
     const { videoId } = req.params
     //TODO: get video by id
+
 })
 
 const updateVideo = asyncHandler(async (req, res) => {
