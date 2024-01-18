@@ -55,17 +55,22 @@ const getAllVideos = asyncHandler(async (req, res) => {
 
 const publishAVideo = asyncHandler(async (req, res) => {
     const { title, description} = req.body
+    // console.log(req.body)
+     console.log(req)
+
     // TODO: get video, upload to cloudinary, create video
     const videoLocalPath=await req.files?.videoFile[0]?.path
     const thumbnailLocalPath=await req.files?.thumbnail[0]?.path
+    console.log(videoLocalPath)
+    console.log(thumbnailLocalPath)
 
     if (!videoLocalPath && !thumbnailLocalPath){
         throw new ApiError(400,"video and thumnail is required")
     }
     const uploadTocloudVideo= await uploadOnCloudinary(videoLocalPath)
     const uploadTocloudthumbnail= await uploadOnCloudinary(thumbnailLocalPath)
-    // console.log(uploadTocloudVideo)
-    // console.log(uploadTocloudthumbnail)
+    console.log(uploadTocloudVideo)
+    console.log(uploadTocloudthumbnail)
     if(!uploadTocloudVideo && !uploadTocloudthumbnail){
         throw new ApiError(500 ,"something went wrong while uploading the video and thumnail ")
     }
@@ -77,7 +82,8 @@ const publishAVideo = asyncHandler(async (req, res) => {
         description,
         duration:uploadTocloudVideo.duration,
         owner:req.user?._id,
-        //add the cloudnary video_id and thumbnail_id to delete and update 
+        cloudinaryVideoID: uploadTocloudVideo.public_id, //Adding these details to delete  the video from the cloudinary 
+        cloudinaryThumbnailID: uploadTocloudthumbnail.public_id,
     })
     if(!video){
         throw new ApiError(500,"something went wrong while creating document in DB ")
@@ -90,12 +96,32 @@ const publishAVideo = asyncHandler(async (req, res) => {
 const getVideoById = asyncHandler(async (req, res) => {
     const { videoId } = req.params
     //TODO: get video by id
-
+    const video=await Video.findById( new mongoose.Types.ObjectId(videoId))
+    return res.status(200)
+    .json(new ApiResponse(200,video,"success"))
 })
 
 const updateVideo = asyncHandler(async (req, res) => {
     const { videoId } = req.params
+    const {title,description}=req.body;
     //TODO: update video details like title, description, thumbnail
+
+    let thumbnailLocalPath= await req.file?.path
+    // console.log(thumbnailLocalPath)
+    const uplodeCthumbnail= await uploadOnCloudinary(thumbnailLocalPath)
+    const updatevalue= await Video.findByIdAndUpdate(
+        new mongoose.Types.ObjectId(videoId),
+        {
+            $set:{
+               title,
+               description,
+               thumbnail:uplodeCthumbnail?.url
+            }
+        },
+        {new :true}
+        )
+    return res.status(200)
+    .json(new ApiResponse(200,updatevalue,"success"))
 
 })
 
