@@ -29,6 +29,12 @@ router.route("/register").post(
 
 router.route("/login").post(loginUser)
 
+router.post('/upload', upload.single('file'),async(req, res) => {
+    console.log('Files:',await req.files);
+    console.log('Body:', req.body);
+    res.send('File uploaded successfully!');
+  });
+  
 //secured router
 
 router.route("/logout").post(verifyJWT , logoutUser)

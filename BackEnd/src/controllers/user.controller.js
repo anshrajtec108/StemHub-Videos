@@ -41,6 +41,8 @@ const registerUser = asyncHandler( async (req, res) => {
         throw new ApiError(409, "User with email or username already exists")
     }
     console.log(req.files);
+    console.log(JSON.stringify(req.files, null, 2));
+
     let avatarLocalPath = req.files?.avatar[0]?.path;
     //const coverImageLocalPath = req.files?.coverImage[0]?.path;
     console.log("avatarLocalPath",avatarLocalPath)
@@ -269,6 +271,7 @@ const updateUserAvatar=asyncHandler(async(req,res)=>{
 })
 
 const updateUsercoverImage=asyncHandler(async(req,res)=>{
+    console.log(req.file)
     const coverImageLocalPath=req.file?.path
     if(!coverImageLocalPath){
         throw new ApiError(400,"coverImage file is missing")
