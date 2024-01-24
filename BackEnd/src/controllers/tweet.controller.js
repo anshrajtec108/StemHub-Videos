@@ -58,7 +58,16 @@ if(!updateTweet){
 
 const deleteTweet = asyncHandler(async (req, res) => {
     const tweetId=new mongoose.Types.ObjectId(req.params.tweetId);
+
+    const tweet= await Tweet.findById(tweetId)
+
+    if(tweet.owner.toString() != req.user?._id){
+        throw new ApiError(400,"You don't have permission to delete this tweet!")
+    }
     const deleteTweet=await Tweet.findByIdAndDelete(tweetId)
+    if(!deleteTweet){
+        throw new ApiError(500,"something went wrong while deleting the Tweet")
+    }
     res.status(200)
     .json(new ApiResponse(200,deleteTweet,"succesfully the Tweet is deleted"))
 })
