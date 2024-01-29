@@ -32,28 +32,33 @@ const getUserPlaylists = asyncHandler(async (req, res) => {
                 owner: new mongoose.Types.ObjectId(userId)
             } 
         },
-        {
+         {
             $lookup:{
                 from:"videos",
                 localField:"videos",
                 foreignField:"_id",
                 as:"videos",
-                pipeline:[{
-                    
-                    $lookup:{
+            }},
+            {  $lookup:{
                         from:"users",
                         localField:"owner",
-                        foreignField:"_id"
+                        foreignField:"_id",
+                        as: "owner"
                     }
                 },
-                    {
-                        $project:{
-                            username:1,
-                            avatar:1
-                        }
-                    }
-                ]
-            }
+                {
+                    $project: {
+                    name:1,
+                    description:1,
+                    "videos.title":1,
+                    "videos.description":1,
+                    "videos.thumbnail":1,
+                    "videos.videoFile":1,
+                    "videos.duration":1,
+                    "videos.views":1,
+                    "owner.username": 1,
+                    "owner.avatar": 1
+                }
         },
     ])
     return res.status(200)
@@ -110,23 +115,56 @@ const getPlaylistById = asyncHandler(async (req, res) => {
 
 const addVideoToPlaylist = asyncHandler(async (req, res) => {
     const {playlistId, videoId} = req.params
+    console.log(playlistId, videoId)
+    // const playlist=await Playlist.findById(playlistId)
+    const playlist = await Playlist.findOneAndUpdate(
+        { _id: playlistId }, 
+        { $push: { videos: videoId } }, 
+        { new: true }
+    )
+    if(!playlist){
+        throw new ApiError(400,"the playlist not found")
+    }
+    return res.status(200)
+    .json(new ApiResponse(200,playlist,"the video is add to the playlist"))
+
 })
 
 const removeVideoFromPlaylist = asyncHandler(async (req, res) => {
     const {playlistId, videoId} = req.params
     // TODO: remove video from playlist
-
+    const playlist= await Playlist.updateOne(
+        { _id: playlistId },
+        { $pull: { videos: videoId } },)
+    
+    return res.status(200)
+    .json(new ApiResponse(200,playlist,"the video is delete from the playlist"))
 })
 
 const deletePlaylist = asyncHandler(async (req, res) => {
     const {playlistId} = req.params
     // TODO: delete playlist
+    const deletePlaylist=await Playlist.findByIdAndDelete(
+        {_id:playlistId},
+    )
+    return res.status(200)
+    .json(new ApiResponse(200,deletePlaylist,"the playlist is deleted"))
 })
 
 const updatePlaylist = asyncHandler(async (req, res) => {
     const {playlistId} = req.params
     const {name, description} = req.body
-    //TODO: update playlist
+    const updatedplaylist=await Playlist.findByIdAndUpdate(
+        playlistId,
+        {
+            $set:{
+            name,
+            description
+        }},
+        {new:true}
+    )
+    return res.status(200)
+    .json(new ApiResponse(200,updatedplaylist,"the playlist updated successfully"))
 })
 
 export {
