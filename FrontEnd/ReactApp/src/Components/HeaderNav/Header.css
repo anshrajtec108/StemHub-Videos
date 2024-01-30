@@ -1,0 +1,100 @@
+#main{
+    height: 56px;
+    padding: 0 16px;
+    display: flexbox;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    background-color: black;
+}
+#left{
+    display: flex;
+    flex: 3;
+    align-items: center;
+    justify-content: center;
+}
+#left img{
+    /* aspect-ratio: 3/2; */
+    /* color: wheat ; */
+    /* object-fit: contain;
+    mix-blend-mode:color-burn; */
+}
+#menu{
+    width: 40px;
+    height: 40px;
+    color: white;
+    padding: 8px;
+    margin-right: 8px;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+#center{
+    display: flex;
+    flex: 5;
+    justify-content: center;
+    align-items: center;
+}
+#search{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 405px;
+    height: 40px;
+    border: 2px white;
+    cursor: pointer;
+}
+#search input{
+    width: 405px;
+    height: 40px;
+    color: #000000;
+    background-color: #FFF;
+    border: 1px solid rgb(255, 255, 255);
+    border-right: 1px solid black;
+    border-radius: 40px 0px 0px 40px;
+    margin: 0px 0px 0px 32px;
+    padding: 0px 4px 0px 16px;
+    cursor: pointer;
+}
+#searchLogo{
+    width: 64px;
+    height: 39px;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    border: 1px solid rgb(255, 255, 255);
+    border-radius: 0px 40px 40px 0px;
+    align-items: center;
+    background-color: #F8F8F8;
+    font-size: large;
+    cursor: pointer;
+}
+#right{
+    display: flex;
+    flex: 3;
+    justify-content: center;
+    margin: right 16px;;
+    justify-content: space-between;
+    align-items: center;
+    color: #FFF;
+    
+}
+#right img{
+    height: 40px;
+    width: 40px;
+    margin-right: 30px;
+    border-radius: 50%;
+    align-items: center;
+    object-fit: cover;
+    cursor: pointer;
+}
+#creatLogo{
+     cursor: pointer;
+}
+#userAvatar{
+     cursor: pointer;
+}
+#notification{
+    cursor: pointer;
+}

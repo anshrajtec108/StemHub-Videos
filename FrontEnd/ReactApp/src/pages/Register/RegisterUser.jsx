@@ -1,7 +1,6 @@
 import  { useState } from 'react';
 import axios from 'axios';
 import './Register.css'
-
 const RegistrationForm = () => {
   const [formData, setFormData] = useState({
     fullName: '',
@@ -46,7 +45,6 @@ const RegistrationForm = () => {
   return (
     <div id='maindiv'>
       <h1>User Registration</h1>
-
       <form onSubmit={handleSubmit}>
         <label htmlFor="fullName">Full Name:</label>
         <input type="text" name="fullName" value={formData.fullName} onChange={handleInputChange} required /><br />
