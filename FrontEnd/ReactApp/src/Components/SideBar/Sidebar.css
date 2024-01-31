@@ -1,0 +1,16 @@
+
+#main{
+    height: 100%;
+    width: 30%px;
+    color: #fff;
+
+    background-color: rgb(5, 4, 4);
+}
+.name{
+    color: #fff;
+    display: flex;
+}
+.icon{
+    color: #fff;
+    display: flex;
+}
