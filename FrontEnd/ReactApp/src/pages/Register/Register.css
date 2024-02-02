@@ -1,52 +1,74 @@
+body {
+  background-color: #222;
+  color: #fff; 
+  transition: background-color 0.3s, color 0.3s; 
+}
+
 #maindiv {
-    max-width: 400px;
-    margin: auto;
-    margin-top: 100px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    box-sizing: border-box;
-  }
-  
-  /* Style the radio container */
-  /* .radio-container {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
-  /* Style the radio buttons */
-  .radio-container input[type="radio"] {
-    margin-right: 5px;
-  }
-  
-  /* Style the radio label text */
-  .radio-container label {
-    margin-right: 15px;
-  } */
-  button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  button:hover{
-    padding:  12px 25px;
-    border: 2px solid white;
-    color: #fff;
-        border-radius: 5px;
-    background-color: #033505;
+  max-width: 400px;
+  margin: auto;
+  margin-top: 100px;
+  padding: 20px;
+  border: 1px solid #444;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+ }
 
-  }
+input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+  background-color: #333;
+  color: #fff; 
+  border: 1px solid #444; 
+  border-radius: 5px;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+input:focus {
+  outline: none;
+  border-color: #666;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+button:hover {
+  padding: 12px 25px;
+  border: 2px solid white;
+  color: #fff;
+  border-radius: 5px;
+  background-color: #033505;
+}
 
 
-  
+input:hover {
+  background-color: #444;
+}
+
+
+button:hover {
+  background-color: #066c07; 
+}
+.radio-container {
+  display: flex; 
+  align-items: center;
+  margin-bottom: 15px; 
+}
+
+.radio-container input[type="radio"] {
+  margin-top: 20px;
+  margin-right: 2px; 
+}
+
+.radio-container label {
+  margin-right: 5px; 
+}

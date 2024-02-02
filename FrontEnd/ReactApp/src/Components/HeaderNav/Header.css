@@ -1,5 +1,6 @@
 #main{
     height: 56px;
+    width: 100%;
     padding: 0 16px;
     display: flexbox;
     display: flex;
@@ -98,3 +99,44 @@
 #notification{
     cursor: pointer;
 }
+#hiddendivinfo{
+    
+    height: 150px;
+    width: 150px;
+    padding: 16px;
+    position: absolute;
+    background-color:#666;
+    left: 85%;
+    top: 48px;
+    right: 7px;
+    display: flex;
+    align-items: center;
+    border: 1px solid wheat;
+    border-radius: 20px;
+    line-height: 15px;
+    /* display: none; */
+}
+#frist{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+#frist img{
+        height: 40px;
+        width: 40px;
+        margin-right: 20px;
+        border-radius: 50%;
+        align-items: center;
+        object-fit: cover;
+        cursor: pointer;
+}
+#thex{
+    margin-top: 1px;
+    margin-left: 0;
+    padding-left: 0;
+    color: red;
+    padding-top: 0px;
+    padding-bottom: 10px;
+    cursor: pointer;
+}
+

@@ -1,9 +1,9 @@
 
-function Home() {
+function Home(props) {
   return (
     <div>
+      {props.data}
       Home
-Home
     </div>
   )
 }

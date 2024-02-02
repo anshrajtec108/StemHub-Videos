@@ -64,7 +64,7 @@ const RegistrationForm = () => {
         <label htmlFor="coverImage">Cover Image:</label>
         <input type="file" name="coverImage" accept="image/*" onChange={handleInputChange} /><br />
 
-        <input type="submit" value="Register" />
+        <button type="submit" value="Register" >Register</button>
       </form>
     </div>
   );

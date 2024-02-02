@@ -1,5 +1,5 @@
 
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route , } from 'react-router-dom';
 import './App.css'
 import Header from './Components/HeaderNav/Header'
 import RegistrationForm from './pages/Register/RegisterUser'
@@ -15,18 +15,20 @@ function App() {
  
 
   return (<>
-  {/* <SideBar>
+  {/* <SideBar> */}
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Home />} />
+        <Route path='/home' element={<Home />} />
         <Route path='/shorts' element={<Shorts />} />
         <Route path='/subscription' element={<Subscription />} />
         <Route path='/playList' element={<PlayList />} />
         <Route path='/dashboard' element={<Dashboard />} />
       </Routes>
     </BrowserRouter>
-    </SideBar> */}
+    {/* </SideBar> */}
     <Login/>
+    {/* <RegistrationForm/> */}
+    {/* <Header/> */}
     </>
     
   )

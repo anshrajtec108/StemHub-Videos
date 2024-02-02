@@ -1,14 +1,19 @@
 import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+
 import axios from 'axios';
 import '../Register/Register.css'
+import Header from '../../Components/HeaderNav/Header';
+import Home from '../Home/Home';
 function Login() {
  const[data , setdata]=useState("")
  const[nameData,setNameData]=useState("")
  const [password , setpassword]=useState("")
+ const history = useHistory();
 
   function handleSubmit(e){
+   
     console.log("nameData",nameData)
-    e.preventDefault();
     let obj={
       [nameData]:data,
       password:password,
@@ -16,23 +21,47 @@ function Login() {
     console.log("obj    ",obj)
     axios.post("http://localhost:8080/api/v1/users/login",obj)
     .then((res)=>{
-      console.log(res.data)
+      if(res.success){
+          history.push('/home', { data: res.data });
+       console.log(res.data)
+    }
+    }).catch((error)=>{
+      console.log(error);
     })
   }
   return (
     <div id='maindiv'>
       <form  onSubmit={(e)=>(handleSubmit(e))}>
+        <label htmlFor='EmailUsername'>Email OR Username</label><br></br>
      <input 
         type='text'
+        id='EmailUsername'
         placeholder='username or Email'
         onChange={(e)=>(setdata(e.target.value))}
         value={data}
      />
-     <select onChange={(e)=>setNameData("email"||e.target.value)} required>
-     <option value="email" className='radio-container'>Email</option>
-     <option value="username" className='radio-container'>Username</option>
-     </select>
+     
+     <div className="radio-container">
+     <label htmlFor="email">Email</label>
+    <input 
+    type="radio" 
+    id="email" 
+    className='radio'
+    name="dataSendName" 
+    onChange={()=>(setNameData("email"))}/>
+   
+    <label htmlFor="username">Username</label>
+    <input 
+    type="radio"
+     id="username" 
+     className='radio'
+     name="dataSendName"
+    onChange={()=>(setNameData("username"))}
+    />
 
+</div>
+
+    <label >Password</label>
      <input 
         type='password'
         placeholder='password'
@@ -45,6 +74,7 @@ function Login() {
     </div>
     
   );
+
 }
 
 export default Login;
