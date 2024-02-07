@@ -1,10 +1,14 @@
-
+import { UserProvider } from '../../Context/UserContext.jsx'
+import Header from '../../Components/HeaderNav/Header.jsx'
 function Home(props) {
   return (
+    <UserProvider>
     <div>
-      {props.data}
+    <Header/>
       Home
     </div>
+    </UserProvider>
+    
   )
 }
 

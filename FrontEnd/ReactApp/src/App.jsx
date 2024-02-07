@@ -1,6 +1,7 @@
 
 import { BrowserRouter, Routes, Route , } from 'react-router-dom';
 import './App.css'
+
 import Header from './Components/HeaderNav/Header'
 import RegistrationForm from './pages/Register/RegisterUser'
 import Home from './pages/Home/Home'
@@ -15,8 +16,7 @@ function App() {
  
 
   return (<>
-  {/* <SideBar> */}
-    <BrowserRouter>
+    {/* <BrowserRouter>
       <Routes>
         <Route path='/home' element={<Home />} />
         <Route path='/shorts' element={<Shorts />} />
@@ -24,11 +24,10 @@ function App() {
         <Route path='/playList' element={<PlayList />} />
         <Route path='/dashboard' element={<Dashboard />} />
       </Routes>
-    </BrowserRouter>
-    {/* </SideBar> */}
-    <Login/>
-    {/* <RegistrationForm/> */}
-    {/* <Header/> */}
+    </BrowserRouter> */}
+    {/* <Login/> */}
+    <Home/>
+
     </>
     
   )

@@ -1,15 +1,15 @@
 import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+
 
 import axios from 'axios';
 import '../Register/Register.css'
-import Header from '../../Components/HeaderNav/Header';
-import Home from '../Home/Home';
+// import Header from '../../Components/HeaderNav/Header';
+// import Home from '../Home/Home';
 function Login() {
  const[data , setdata]=useState("")
  const[nameData,setNameData]=useState("")
  const [password , setpassword]=useState("")
- const history = useHistory();
+
 
   function handleSubmit(e){
    
