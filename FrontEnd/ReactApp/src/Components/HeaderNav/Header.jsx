@@ -20,7 +20,7 @@ function Header(props) {
     setshow(false)
   }
   return (<>
-    <div id='main' style={{ height: "56px" }}>
+    <div id='headerMain' style={{ height: "56px" }}>
       <div id="left">
         <div id="menu">
           <Menu />

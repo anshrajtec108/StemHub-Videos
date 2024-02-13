@@ -1,10 +1,10 @@
 
 #main{
-    height: 100%;
-    width: 30%px;
+    height: 100vh;
+    
     color: #fff;
-
-    background-color: rgb(5, 4, 4);
+    /* align-items: first baseline; */
+    background-color: rgb(228, 0, 0);
 }
 .name{
     color: #fff;

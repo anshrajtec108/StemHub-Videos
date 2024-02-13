@@ -31,7 +31,6 @@ function SideBar() {
               console.log(index, item);
 
               return (<>
-                <p key={index+1}>{item.path}</p>
                 <Link to={item.path} key={index}>
                   <div className="icon" key={index+2}>{item.icon}</div>
                   <div className="name" key={index+3}>{item.name}</div>

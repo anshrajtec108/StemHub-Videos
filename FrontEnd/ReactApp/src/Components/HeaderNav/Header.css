@@ -1,4 +1,4 @@
-#main{
+#headerMain{
     height: 56px;
     width: 100%;
     padding: 0 16px;
@@ -10,11 +10,17 @@
     overflow: hidden;
     background-color: black;
 }
+
 #left{
     display: flex;
     flex: 3;
     align-items: center;
     justify-content: center;
+}
+#menu{
+    margin: 0;
+    padding: 0;
+    align-items: start;
 }
 #left img{
     /* aspect-ratio: 3/2; */
@@ -27,7 +33,7 @@
     height: 40px;
     color: white;
     padding: 8px;
-    margin-right: 8px;
+    margin-right: 0px;
     box-sizing: border-box;
     cursor: pointer;
 }
@@ -106,6 +112,7 @@
     padding: 16px;
     position: absolute;
     background-color:#666;
+     /* background-color:#ff0000; */
     left: 85%;
     top: 48px;
     right: 7px;
