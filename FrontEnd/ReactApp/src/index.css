@@ -10,3 +10,6 @@
     overflow: hidden;
     background-color: black;
 }
+.page-size{
+    height: calc(100vh - 56px);
+}

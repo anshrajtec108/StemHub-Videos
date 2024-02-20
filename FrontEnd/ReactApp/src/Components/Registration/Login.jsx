@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 
 import axios from 'axios';
-import '../Register/Register.css'
+import './Register.css'
 // import Header from '../../Components/HeaderNav/Header';
 // import Home from '../Home/Home';
 function Login() {

@@ -1,9 +1,10 @@
 
 #main{
     height: 100vh;
-    
+    width: 70px;
     color: #fff;
     /* align-items: first baseline; */
+    display: ;
     background-color: rgb(228, 0, 0);
 }
 .name{
