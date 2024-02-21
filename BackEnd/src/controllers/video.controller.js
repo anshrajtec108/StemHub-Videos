@@ -13,10 +13,10 @@ const getAllVideos = asyncHandler(async (req, res) => {
     //sorting is pending
     let sortOptions={}
     let basequery={}
-    console.log(query)
     if(sortBy){
         sortOptions[sortBy] = sortType == "desc" ? -1 : 1;
     }
+ 
     if(query){
         basequery.$or=[
             {title:{$regex : query,$options:"i"}},
@@ -44,7 +44,6 @@ const getAllVideos = asyncHandler(async (req, res) => {
                 $limit:parseInt(limit)
             },
         ])
-        console.log(result)
         return res.status(200)
         .json(new ApiResponse(200,result,"Success"))
         

@@ -59,7 +59,7 @@ const toggleTweetLike = asyncHandler(async (req, res) => {
             tweet:tweetId,
             likedBy:req.user?._id
         })
-        res.status(200)
+        return res.status(200)
         .json(new ApiResponse(200,likedthetweet,"the tweet is liked "))
     }
 }
@@ -69,7 +69,7 @@ const getLikedVideos = asyncHandler(async (req, res) => {
     //TODO: get all liked videos
     //pending write a aggregate pipeline to return the video info like title ,desr, etc 
     const findTheVideoLiked = await Like.find({ video: { $ne: null } });
-    res.status(200)
+    return res.status(200)
     .json(new ApiResponse(200,findTheVideoLiked,"get all videos which was liked"))
 })
 
