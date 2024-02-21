@@ -13,7 +13,7 @@ const getAllVideos = asyncHandler(async (req, res) => {
     //sorting is pending
     let sortOptions={}
     let basequery={}
-
+    console.log(query)
     if(sortBy){
         sortOptions[sortBy] = sortType == "desc" ? -1 : 1;
     }
