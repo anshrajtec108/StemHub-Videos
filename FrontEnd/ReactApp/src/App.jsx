@@ -8,6 +8,8 @@ import Shorts from './pages/Shorts/Shorts'
 
 import PlayList from './pages/PlayList/PlayList'
 import Layout from './Layout';
+import AutoEvent from './Components/testing/AutoEvent.jsx';
+import LiveComment from './Components/livecomment/LiveComment.jsx';
 const env = import.meta.env.VITE_BASE_URL;
 
 // Now you can use `env` in your component
@@ -42,7 +44,8 @@ function App() {
     {/* <RouterProvider router={router}>
       
     </RouterProvider> */}
-
+    {/* <AutoEvent/> */}
+    <LiveComment/>
     </>
     
   )

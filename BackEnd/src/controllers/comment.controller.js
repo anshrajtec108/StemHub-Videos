@@ -8,48 +8,50 @@ const getVideoComments = asyncHandler(async (req, res) => {
     //TODO: get all comments for a video
     const {Id} = req.params
     const { page = 1, limit = 10, type = "video" } = req.query
-
+    
    const response= await Comment.aggregate([
         {
             $match:{
-                $and:[{ _id: Id }, { type: type }]
+                $and: [{ video: Id }, { type: type }]
             }
         },
-        {
-            $lookup: {
-                from: "users",
-                localField: "owner",
-                foreignField: "_id",
-                as: "owner",
-                pipeline: [
-                    {
-                        $project: {
-                            fullName: 1,
-                            username: 1,
-                            avatar: 1
-                        }
-                    }
-                ]
-            }
-        },
-        {
-            $addFields: {
-                owner: {
-                    $first: "$owner"
-                }
-            }
-        },
+       {
+           $lookup: {
+               from: "users",
+               localField: "owner",
+               foreignField: "_id",
+               as: "owner",
+               pipeline: [
+                   {
+                       $project: {
+                           fullName: 1,
+                           username: 1,
+                           avatar: 1
+                       }
+                   }
+               ]
+           }
+       },
+       {
+           $addFields: {
+               owner: {
+                   $first: "$owner"
+               }
+           }
+       },
        {
            $skip: (page - 1) * limit
        },
        {
            $limit: parseInt(limit)
        },
+
     ])
 
     if(!response){
         throw new ApiError(500, "something went wrong while get all comments")
     }
+    console.log("sdf",response)
     return res.status(200).json(new ApiResponse(200, response, "the comment is Successfully get all comments "))
 })
 

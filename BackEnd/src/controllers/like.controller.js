@@ -73,6 +73,9 @@ const getLikedVideos = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200,findTheVideoLiked,"get all videos which was liked"))
 })
 
+const auto_UpdateLike=asyncHandler(async(req,res)=>{
+
+})
 export {
     toggleCommentLike,
     toggleTweetLike,
