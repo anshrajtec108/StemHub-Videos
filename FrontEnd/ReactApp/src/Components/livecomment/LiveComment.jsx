@@ -7,7 +7,8 @@ const socket = io.connect(host);
 function LiveComment() {
     const [data, setData] = useState("");
     const [input, setInput] = useState("");
-    const room = "all"; // Room name
+    const [roomName, setRoomName] = useState("");
+    const room = roomName; // Room name
 
     useEffect(() => {
         // Join the room when the component mounts
@@ -29,6 +30,7 @@ function LiveComment() {
             // Emit the comment to the specific room
             socket.emit('liveComment', { comment: input.trim(), room });
             setInput('');
+            setRoomName('')
         }
     };
 
@@ -41,6 +43,12 @@ function LiveComment() {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     placeholder="Enter your comment"
+                />
+                <input
+                    type="text"
+                    value={roomName}
+                    onChange={(e) => setRoomName(e.target.value)}
+                    placeholder="Enter your room"
                 />
                 <button onClick={handleClick}>Send</button>
             </div>

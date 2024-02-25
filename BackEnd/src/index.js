@@ -30,20 +30,21 @@ const io = new Server(httpServer, {
         methods: ["GET", "POST"]
     }
 });
-
+let roomName;
 // Event handler for new connections
 io.on("connection", (socket) => {
     console.log("A new client connected");
     
     socket.on('joinRoom', (room) => {
-        socket.join(room); // Join the specified room
+        socket.join(room);
+        roomName=room // Join the specified room
         console.log(`Client joined room: ${room}`);
     });
 
     // Event listener for 'liveComment'
     socket.on("liveComment", (data) => {
         console.log("Received live comment:", data);
-        io.to("all").emit("sendLiveComment", data); // Emit to 'all' room
+        io.to(roomName).emit("sendLiveComment", data); 
     });
 });
 
