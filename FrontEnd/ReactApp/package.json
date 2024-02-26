@@ -19,7 +19,9 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.0",
     "react-toastify": "^10.0.4",
+    "react-webcam": "^7.2.0",
     "run": "^1.5.0",
+    "simple-peer": "^9.11.1",
     "socket.io-client": "^4.7.4"
   },
   "devDependencies": {
