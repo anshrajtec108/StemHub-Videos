@@ -2,9 +2,10 @@ import mongoose from "mongoose";
 import { User } from "../models/user.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { Video } from "../models/video.model.js";
+// import { Video } from "../models/video.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { compareTime } from "../utils/compareTime.util.js";
+import { Video } from "../models/video.model.js";
 
 const ON_PalyVideo =asyncHandler(async(req,res)=>{
     const {videoId}=req.body

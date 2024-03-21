@@ -1,0 +1,13 @@
+#channelDetails{
+    display: flex;
+    color: black;
+}
+#left{
+    flex : 3;
+}
+#center{
+    flex: 7;
+}
+#right{
+    flex: 2;
+}
