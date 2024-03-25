@@ -13,6 +13,7 @@ import CardThumbnail from './Components/CardThumbnail/CardThumbnail.jsx';
 import VideoList from './Components/DashBoard.components/VideoList.jsx';
 import ChannelBannner from './Components/DashBoard.components/ChannelBannner.jsx';
 import ChannelView from './Components/DashBoard.components/channelView.components.jsx';
+import SubscribeButton from './Components/CardThumbnail/subscribeButton.jsx';
 // import AutoEvent from './Components/testing/AutoEvent.jsx';
 // import LiveComment from './Components/livecomment/LiveComment.jsx';
 
