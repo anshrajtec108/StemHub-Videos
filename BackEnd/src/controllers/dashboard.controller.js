@@ -87,14 +87,29 @@ const getChannelVideos = asyncHandler(async (req, res) => {
     if(!userId){
         throw new ApiError(400,"give the user ID or channel ID ")
     }
-
-    const  videos=await Video.find({owner:userId})
-    if(!videos){
-        throw new ApiError(500,"  No videos uploded ")
+    const videoInfo=await Video.aggregate([
+        {
+            $match:{
+                owner:new mongoose.Types.ObjectId(userId)
+            }
+        },
+        {
+            $project:{
+                title:1,
+                thumbnail:1,
+                duration:1,
+                updatedAt:1
+            }
+        }
+    ])
+    if(!videoInfo){
+        new ApiError(500,"Not video uploaded")
     }
-    return res.status(200)
-        .json(new ApiResponse(200, videos, "get all videos successfully"))
+    return res.status(200).json(
+        new ApiResponse(200, videoInfo, "Channel video's retrieved successfully")
+    );
 })
+    
 
 export {
     getChannelStats, 

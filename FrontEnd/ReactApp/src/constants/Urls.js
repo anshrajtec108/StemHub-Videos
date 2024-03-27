@@ -49,6 +49,9 @@ export const URLS = {
     getAllVideosLikedByUser:"/likes/videos",
 
     //Histoty
-    onPalyVideo:"/histoty/onPlayViedo"
+    onPalyVideo:"/histoty/onPlayViedo",
+
+    // dashboard
+    getChannelvideoinfo:"/dashboard/videos" //put
 
 }

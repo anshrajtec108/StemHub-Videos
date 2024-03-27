@@ -14,6 +14,7 @@ import VideoList from './Components/DashBoard.components/VideoList.jsx';
 import ChannelBannner from './Components/DashBoard.components/ChannelBannner.jsx';
 import ChannelView from './Components/DashBoard.components/channelView.components.jsx';
 import SubscribeButton from './Components/CardThumbnail/subscribeButton.jsx';
+import Login from './Components/Registration.components/Login.jsx';
 // import AutoEvent from './Components/testing/AutoEvent.jsx';
 // import LiveComment from './Components/livecomment/LiveComment.jsx';
 
@@ -46,8 +47,8 @@ function App() {
 
   return (<>
     {/* <div>{env}</div> */}
-    {/* <Login/>
-    <Dashboard/> */}
+    {/* <Login/> */}
+    {/* <Dashboard/> */}
     {/* <RouterProvider router={router}>
       
     </RouterProvider> */}

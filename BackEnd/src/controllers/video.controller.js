@@ -95,9 +95,68 @@ const publishAVideo = asyncHandler(async (req, res) => {
 const getVideoById = asyncHandler(async (req, res) => {
     const { videoId } = req.params
     //TODO: get video by id
-    const video=await Video.findById( new mongoose.Types.ObjectId(videoId))
+    const video_L_S_info = await Video.aggregate([
+        {
+            $match: {
+                _id: new mongoose.Types.ObjectId(videoId)
+            }
+        },
+        {
+            $lookup: {
+                from: "users",
+                localField: "owner",
+                foreignField: "_id",
+                as: "user"
+            }
+        },
+        {
+            $lookup:{
+                from:"likes",
+                localField:"_id",
+                foreignField:"video",
+                as:"likes"
+            }
+        },
+        {
+            $addFields:{
+                likesCount:{$size:'$likes'}
+            }
+        },
+        {
+            $lookup:{
+                from:"subscriptions",
+                localField:"owner",
+                foreignField:'channel',
+                as:"subscribers"
+            }
+        },
+        {
+            $addFields:{
+                subscribersCount: { $size:"$subscribers"}
+            }
+        },
+        {
+            $unwind: '$user'
+        },
+        {
+            $project: {
+                videoFile: 1,
+                title: 1,
+                description: 1,
+                views: 1,
+                username: '$user.username', 
+                avatar: '$user.avatar' ,
+                likesCount:1,
+                subscribersCount:1
+            }
+        }
+    ]);
+
+    if (!video_L_S_info){
+        new ApiError(500,"not get video information")
+    }
     return res.status(200)
-    .json(new ApiResponse(200,video,"success"))
+        .json(new ApiResponse(200, video_L_S_info,"success"))
 })
 
 const updateVideo = asyncHandler(async (req, res) => {
