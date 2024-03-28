@@ -1,8 +1,9 @@
 import React from 'react'
-function onclikeHandle() {
 
-}
 function CardThumbnail(props) {
+    function onclikeHandle() {
+        
+    }
     return (<div onClick={onclikeHandle}>
 
 

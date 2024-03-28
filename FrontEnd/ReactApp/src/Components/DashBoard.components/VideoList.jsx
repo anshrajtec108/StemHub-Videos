@@ -13,7 +13,7 @@ function VideoList(props) {
         try {
             const res = await makeGetRequest(`${URLS.getChannelvideoinfo}/${userId}`, {}, {});
             console.log(`${ URLS.getChannelvideoinfo } / ${ userId }`);
-            console.log(res.data.title)
+            console.log(res.data)
             setVideoList(res.data);
         } catch (error) {
             console.log(error);

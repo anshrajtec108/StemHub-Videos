@@ -15,6 +15,9 @@ import ChannelBannner from './Components/DashBoard.components/ChannelBannner.jsx
 import ChannelView from './Components/DashBoard.components/channelView.components.jsx';
 import SubscribeButton from './Components/CardThumbnail/subscribeButton.jsx';
 import Login from './Components/Registration.components/Login.jsx';
+import VideoPlayer from './Components/CardThumbnail/VideoPlayer.jsx';
+import Loader from './Components/CardThumbnail/Loader.jsx';
+
 // import AutoEvent from './Components/testing/AutoEvent.jsx';
 // import LiveComment from './Components/livecomment/LiveComment.jsx';
 
@@ -57,7 +60,9 @@ function App() {
     {/* <Home/> */}
     {/* <ChannelBannner/> */}
     {/* <VideoList/> */}
-    <ChannelView/>
+    {/* <ChannelView/> */}
+    <VideoPlayer/>
+    {/* <Loader/> */}
     </>
     
   )
