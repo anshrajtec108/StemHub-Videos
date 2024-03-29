@@ -28,7 +28,7 @@ const VideoPlayer = () => {
             display: 'flex',
             margin:'12px',
         }}>
-            <div className="html5-video-container" style={{ width: '700px',marginBottom:"0px" }} data-layer="0" draggable="true">
+            <div style={{ width: '700px',marginBottom:"0px" }} data-layer="0" draggable="true">
                 <video
                     controls
                     tabIndex="-1"
@@ -36,7 +36,7 @@ const VideoPlayer = () => {
                     style={{ width: '634px', height: '357px', marginLeft: "10px", marginTop: "10px", border: "1px", borderRadius: "14px" }}
                     src="http://res.cloudinary.com/dr4krsosv/video/upload/v1705500160/rrgkegqrweyuctxs4tjw.mp4"
                 ></video>
-                <div className="info" style={{ width: '634px',marginBottom:'0px' }}><h2 >
+                <div style={{ width: '634px',marginBottom:'0px' }}><h2 >
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Et quas odit cumque dignissimos minus. Assumenda labore,
                 </h2>
                     <p>
@@ -51,7 +51,7 @@ const VideoPlayer = () => {
                             </div>
                         <div className="detail" style={{flex:2}}>
                             <div className="title" style={{}}>
-                                    <h3>ANsh Raj</h3>
+                                    <h3>Ansh Raj</h3>
                                 </div>
                             <div className="subscribeCount" style={{ flex: '1' }}>
                                     <h6>
@@ -65,7 +65,7 @@ const VideoPlayer = () => {
                     </div>
                     <div className="rightButton" style={{display:'flex', flex: '5', alignItems: "end", marginLeft:'12px'}}>
                         <div className="likeButoon" style={{flex:'1',}}>
-                          <LikeButton/>
+                          <LikeButton likeCount={"1230"}/>
                         </div>
                         <div className="shareButton" style={{ flex: '1' ,}}>
                             <ShareButton/>

@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
+import { makePostRequest } from '../../services/api';
+import { useParams } from 'react-router-dom';
 
-const LikeButton = () => {
+const LikeButton = (props) => {
+    // const {videoId}=useParams()
+    let videoId ='65a73ee3bcd971f56a10ad1e'
     const [liked, setLiked] = useState(false);
-    const [likeCount, setLikeCount] = useState(2050);
+    const [likeCount, setLikeCount] = useState(props.likeCount);
 
     const handleLikeClick = () => {
         setLiked(!liked);
         setLikeCount(liked ? likeCount - 1 : likeCount + 1);
+        makePostRequest(`/likes/toggle/v/${videoId}`)
     };
 
     return (
