@@ -106,7 +106,7 @@ const getVideoById = asyncHandler(async (req, res) => {
                 from: "users",
                 localField: "owner",
                 foreignField: "_id",
-                as: "user"
+                as: "channelOwner"
             }
         },
         {
@@ -136,7 +136,7 @@ const getVideoById = asyncHandler(async (req, res) => {
             }
         },
         {
-            $unwind: '$user'
+            $unwind: '$channelOwner'
         },
         {
             $project: {
@@ -144,8 +144,9 @@ const getVideoById = asyncHandler(async (req, res) => {
                 title: 1,
                 description: 1,
                 views: 1,
-                username: '$user.username', 
-                avatar: '$user.avatar' ,
+                username: '$channelOwner.username', 
+                avatar: '$channelOwner.avatar' ,
+                channelId:'$channelOwner._id',
                 likesCount:1,
                 subscribersCount:1
             }

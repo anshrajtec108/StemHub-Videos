@@ -14,7 +14,6 @@ const toggleSubscription = asyncHandler(async (req, res) => {
      if(!channel){
         throw ApiError(400,"the channel don't exist")
      }
-     console.log(channel?._id)
      const issubscription=await Subscription.findOne({
         subscriber: req.user?._id,
         channel:channelId
@@ -54,7 +53,6 @@ const getUserChannelSubscribers = asyncHandler(async (req, res) => {
             "This channel id is not valid"
         )
     }
-    console.log(channelId)
 
     const subscriptions = await Subscription.aggregate([
         {
@@ -79,8 +77,6 @@ const getUserChannelSubscribers = asyncHandler(async (req, res) => {
             }
         },
     ])
-
-    console.log(subscriptions[0])
 
     return res.status(200).json(
         new ApiResponse(
@@ -121,15 +117,27 @@ const  getSubscribedChannels = asyncHandler(async (req, res) => {
         }
     ])
     if(!listChannel){
-        throw new ApiError(500,"something went wrong while get the list of channel whice is subscribered by user ")
+        throw new ApiError(500,"something went wrong while get the list of channel which  is subscribered by user ")
     }
-    console.log("2",listChannel)
     return res.status(200)
-    .json(new ApiResponse(200,listChannel,"successfully get the  list of channel whice is subscribered by user "))
+    .json(new ApiResponse(200,listChannel,"successfully get the  list of channel which  is subscribered by user "))
+})
+
+//get the user is subscribered to channel (true/flase)
+const isChannelisSubscribedByUser=asyncHandler(async(req,res)=>{
+    const {channelId}=req.params
+    let respone=false
+    const subscriber = await Subscription.findOne({ channel: channelId }, { subscriber :req.user?._id})
+    if(subscriber){
+        respone=true
+    }
+    res.status(200)
+        .json(new ApiResponse(200, respone,"is Channel is Subscribed By User"))
 })
 
 export {
     toggleSubscription,
     getUserChannelSubscribers,
-    getSubscribedChannels
+    getSubscribedChannels,
+    isChannelisSubscribedByUser
 }

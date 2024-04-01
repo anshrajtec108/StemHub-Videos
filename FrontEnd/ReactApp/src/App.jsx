@@ -16,6 +16,8 @@ import ChannelView from './Components/DashBoard.components/channelView.component
 import Login from './Components/Registration.components/Login.jsx';
 import VideoPlayer from './Components/CardThumbnail/VideoPlayer.jsx';
 import Loader from './Components/CardThumbnail/Loader.jsx';
+import LiveStream from './Components/testing/LiveSteaming.jsx';
+import RTMPVideoPlayer from './Components/testing/RTMPVideoPlayer.jsx';
 
 // import AutoEvent from './Components/testing/AutoEvent.jsx';
 // import LiveComment from './Components/livecomment/LiveComment.jsx';
@@ -60,11 +62,10 @@ function App() {
     {/* <ChannelBannner/> */}
     {/* <VideoList/> */}
     {/* <ChannelView/> */}
-    <VideoPlayer/>
-    {/* <Loader/> */}
-    </>
-    
-  )
-}
+    <VideoPlayer/>    {/* <Loader/> */}
+    {/* <LiveStream/> */}
+    {/* <RTMPVideoPlayer/> */}
+</>
+  )}
 
 export default App
