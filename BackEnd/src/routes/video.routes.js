@@ -4,6 +4,7 @@ import {
     getAllVideos,
     getVideoById,
     publishAVideo,
+    recommendation,
     togglePublishStatus,
     updateVideo,
 } from "../controllers/video.controller.js"
@@ -38,5 +39,5 @@ router
     .patch(upload.single("thumbnail"), updateVideo);
 
 router.route("/toggle/publish/:videoId").patch(togglePublishStatus);
-
+router.route("/recommendation/video").post(recommendation)
 export default router

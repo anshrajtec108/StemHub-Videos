@@ -83,7 +83,12 @@ const getChannelStats = asyncHandler(async (req, res) => {
 
 const getChannelVideos = asyncHandler(async (req, res) => {
     // TODO: Get all the videos uploaded by the channel
-    const { userId } = req.params;
+    let { userId, page, limit } = req.query;
+    console.log("userId, page, limit", userId, page, limit);
+    page = parseInt(page) || 1;
+
+    limit = parseInt(limit) || 2;
+    let skip = (page - 1) * limit;
     if(!userId){
         throw new ApiError(400,"give the user ID or channel ID ")
     }
@@ -94,11 +99,32 @@ const getChannelVideos = asyncHandler(async (req, res) => {
             }
         },
         {
-            $project:{
-                title:1,
-                thumbnail:1,
-                duration:1,
-                updatedAt:1
+            $skip: skip
+        },
+        {
+            $limit: limit
+        },
+        {
+            $lookup: {
+                from: "users",
+                localField: 'owner',
+                foreignField: '_id',
+                as: 'owner'
+            }
+        },
+        {
+            $unwind: '$owner' // If each video has only one owner
+        },
+        {
+            $project: {
+                title: 1,
+                thumbnail: 1,
+                description: 1,
+                duration: 1,
+                views: 1,
+                createdAt: 1,
+                'owner.username': 1,
+                'owner.avatar': 1
             }
         }
     ])

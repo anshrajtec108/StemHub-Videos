@@ -6,8 +6,154 @@ import {ApiResponse} from "../utils/ApiResponse.js"
 import {asyncHandler} from "../utils/asyncHandler.js"
 import {uploadOnCloudinary} from "../utils/cloudinary.js"
 
+const recommendation = asyncHandler(async (req, res) => {
+    let userId;
+    if (req.user && req.user._id) {
+        userId = req.user._id;
+    }
 
-const getAllVideos = asyncHandler(async (req, res) => {
+    let { page, limit } = req.body;
+    page = parseInt(page) || 1;
+    limit = parseInt(limit) || 2;
+
+    let latestVideos, popularVideos, recommendations;
+
+    if (userId) {
+        // Get user's watch history if user is authenticated
+        const user = await User.findById(userId).populate('watchHistory');
+        const watchHistory = user ? user.watchHistory.map(video => video._id) : [];
+
+        // Define pagination options
+        const skip = (page - 1) * limit;
+
+        // Get personalized recommendations based on watch history with pagination
+        recommendation = await Video.aggregate([
+            {
+                $match: {
+                    _id: { $nin: watchHistory },
+                    isPublise: true
+                }
+            },
+            {
+                $skip: skip // Assuming skip is a numeric value
+            },
+            {
+                $limit: limit // Assuming limit is a numeric value
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: 'owner',
+                    foreignField: '_id',
+                    as: 'owner'
+                }
+            },
+            {
+                $unwind: '$owner' // If each video has only one owner
+            },
+            {
+                $project: {
+                    title: 1,
+                    thumbnail: 1,
+                    description: 1,
+                    duration: 1,
+                    views: 1,
+                    createdAt: 1,
+                    'owner.username': 1,
+                    'owner.avatar': 1
+                }
+            }
+        ]);
+
+       
+    }
+
+    // Redefine pagination options outside the if block
+    const skip = (page - 1) * limit;
+
+   
+    latestVideos = await Video.aggregate([
+        {
+            $match: { isPublise: true }
+        },
+        {
+            $sort: { createdAt: -1 }
+        },
+        {
+            $skip: skip // Assuming skip is a numeric value
+        },
+        {
+            $limit: limit // Assuming limit is a numeric value
+        },
+        {
+            $lookup: {
+                from: "users",
+                localField: 'owner',
+                foreignField: '_id',
+                as: 'owner'
+            }
+        },
+        {
+            $unwind: '$owner' // If each video has only one owner
+        },
+        {
+            $project: {
+                title: 1,
+                thumbnail: 1,
+                description: 1,
+                duration: 1,
+                views: 1,
+                createdAt: 1,
+                'owner.username': 1, 
+                'owner.avatar': 1 
+            }
+        }
+    ]);
+
+  
+    popularVideos = await Video.aggregate([
+        {
+            $match: { isPublise: true }
+        },
+        {
+            $sort: { views: -1 }
+        },
+        {
+            $skip: skip
+        },
+        {
+            $limit: limit 
+        },
+        {
+            $lookup: {
+                from: "users",
+                localField: 'owner',
+                foreignField: '_id',
+                as: 'owner'
+            }
+        },
+        {
+            $unwind: '$owner' // If each video has only one owner
+        },
+        {
+            $project: {
+                title: 1,
+                thumbnail: 1,
+                description: 1,
+                duration: 1,
+                views: 1,
+                createdAt: 1,
+                'owner.username': 1,
+                'owner.avatar': 1
+            }
+        }
+    ])
+
+    res.json({ success: true, latestVideos, popularVideos, recommendations });
+});
+
+
+const  getAllVideos = asyncHandler(async (req, res) => {
     const { page = 1, limit = 10, query, sortBy, sortType, userId } = req.query
     //TODO: get all videos based on query, sort, pagination
     //sorting is pending
@@ -199,5 +345,6 @@ export {
     getVideoById,
     updateVideo,
     deleteVideo,
-    togglePublishStatus
+    togglePublishStatus,
+    recommendation
 }

@@ -67,50 +67,61 @@ const getUserPlaylists = asyncHandler(async (req, res) => {
 })
 
 const getPlaylistById = asyncHandler(async (req, res) => {
-    const {playlistId} = req.params
-    //TODO: get playlist by id
-    const playlist_items=await Playlist.aggregate([
-        {
-            $match:{
-                _id:new mongoose.Types.ObjectId(playlistId)
-            }
-        },
-        {
-            
-            $lookup:{
-                from:"videos",
-                localField:"videos",
-                foreignField:"_id",
-                as:"videos",
-                pipeline:[{
-                    
-                    $lookup:{
-                        from:"users",
-                        localField:"owner",
-                        foreignField:"_id",
-                        as:"users"
-                    }
+    const { playlistId } = req.params;
+    // TODO: get playlist by id
+    try {
+        const playlistItems = await Playlist.aggregate([
+            {
+                $match: {
+                    _id:new mongoose.Types.ObjectId(playlistId)
                 }
-                ]
+            },
+            {
+                $lookup: {
+                    from: "videos",
+                    localField: "videos",
+                    foreignField: "_id",
+                    as: "videos",
+                    pipeline: [{
+                        $lookup: {
+                            from: "users",
+                            localField: "owner",
+                            foreignField: "_id",
+                            as: "owner"
+                        }
+                    },]
+                }
+            },
+            
+            // {
+            //     $unwind:'$owner'
+            // },
+            {
+                $project: {
+                    "videos.title": 1,
+                    "videos.description": 1,
+                    "videos.videoFile": 1,
+                    "videos.thumbnail": 1,
+                    "videos.duration": 1,
+                    "videos.views": 1,
+                    "owner.id": 1,
+                    "owner.username": 1,
+                    "owner.avatar": 1
+                }
             }
-       
-        },
-        {
-            $project:{
-                "videos.users.username": 1,
-                "videos.users.avatar": 1,
-                "videos.title": 1,
-                "video.description":1,
-                "video.videoFile":1,
-                "video.thumbnail":1,
-                "video.duration":1,
-                "video.views":1, 
-            }
+        ]);
+
+        if (!playlistItems) {
+           throw new ApiError(404,  "Playlist not found");
         }
-    ])
-    return res.status(200)
-    .json(new ApiResponse(200,playlist_items,"successfully get playlist item using playlist_Id"))
-})
+
+        return res.status(200).json(new ApiResponse(200, playlistItems, "Successfully fetched playlist items"));
+    } catch (error) {
+        console.error("Error fetching playlist items:", error);
+        return res.status(500).json(new ApiResponse(500, null, "Internal Server Error"));
+    }
+});
+
 
 
 const addVideoToPlaylist = asyncHandler(async (req, res) => {
