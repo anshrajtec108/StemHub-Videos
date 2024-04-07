@@ -68,7 +68,7 @@ const getUserPlaylists = asyncHandler(async (req, res) => {
 
 const getPlaylistById = asyncHandler(async (req, res) => {
     const { playlistId } = req.params;
-    // TODO: get playlist by id
+    // TODO: the data is coming but use $project to mange the data to send it 
     try {
         const playlistItems = await Playlist.aggregate([
             {
@@ -82,33 +82,41 @@ const getPlaylistById = asyncHandler(async (req, res) => {
                     localField: "videos",
                     foreignField: "_id",
                     as: "videos",
-                    pipeline: [{
-                        $lookup: {
-                            from: "users",
-                            localField: "owner",
-                            foreignField: "_id",
-                            as: "owner"
+                    pipeline: [
+                        {
+                            $lookup: {
+                                from: "users",
+                                localField: "owner",
+                                foreignField: "_id",
+                                as: "VideoOwner",
+                                pipeline: [
+                                    {
+                                        $project: {
+                                            username: 1,
+                                            avatar: 1
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            $addFields: {
+                                VideoOwner: {
+                                    $first: "$VideoOwner"
+                                }
+                            }
                         }
-                    },]
+                    ]
                 }
             },
-            
-            // {
-            //     $unwind:'$owner'
-            // },
-            {
-                $project: {
-                    "videos.title": 1,
-                    "videos.description": 1,
-                    "videos.videoFile": 1,
-                    "videos.thumbnail": 1,
-                    "videos.duration": 1,
-                    "videos.views": 1,
-                    "owner.id": 1,
-                    "owner.username": 1,
-                    "owner.avatar": 1
-                }
+           {
+            $lookup:{
+                from:"users",
+                localField:"owner",
+                foreignField:'_id',
+                as:'playListOwner'
             }
+           },
         ]);
 
         if (!playlistItems) {
@@ -120,6 +128,7 @@ const getPlaylistById = asyncHandler(async (req, res) => {
         console.error("Error fetching playlist items:", error);
         return res.status(500).json(new ApiResponse(500, null, "Internal Server Error"));
     }
+
 });
 
 
