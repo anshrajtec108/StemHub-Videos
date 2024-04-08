@@ -1,9 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 import SmallCardThumbnail from '../CardThumbnail/SmallCardThumbnail.jsx'
+import {  useSelector } from "react-redux";
 
 function PlaylistLists() {
+  const [playlistdata,setPlaylistdata]=useState([])
+  let currentplayInfo = useSelector((store) => store.currentPlayinfo);
+  console.log(currentplayInfo);
+  const getPlayListVideos = () => {
+
+  }
   return (
-    <div className="main-container" style={{ height: '500px', width: '280px', overflowY: 'auto', backgroundColor: '#f0f0f0', padding: '10px', borderRadius: '10px', WebkitOverflowScrolling: 'touch' }}>
+    <div className="main-container" style={{ height: '500px', width: '380px', overflowY: 'auto', backgroundColor: '#f0f0f0', padding: '10px', borderRadius: '10px', WebkitOverflowScrolling: 'touch' }}>
       <style>
         {`
                 /* Style the scrollbar for .main-container */
@@ -21,8 +28,11 @@ function PlaylistLists() {
                 }
                 `}
       </style>
+      <h1>{currentplayInfo.playList.id}</h1>
       <div className="currentplaying" style={{ textAlign: 'center', backgroundColor: 'black', padding: '10px', borderRadius: '5px', color: 'white', marginBottom: '10px' }}>
-        <p className="heading" style={{ fontSize: '18px', fontWeight: 'bold', margin: '0' }}>Currently Playing</p>
+        <p className="heading" style={{ fontSize: '15px', fontWeight: 'bold', margin: '0' }}>{playlistdata.name||"playlistdata.name"}</p>
+        <p className="description" style={{ fontSize: '8px', margin: '0' }}>{playlistdata.description || "playlistdata.description"}</p>
+
       </div>
       <div className="thumbnails" style={{ overflowY: 'auto' }}>
         <SmallCardThumbnail />
