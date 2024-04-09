@@ -3,6 +3,8 @@ import React from 'react'
 function CardThumbnail(props) {
     function onclikeHandle() {
         console.log('Thumbnail clicked');
+        let videoId = props?._id
+        window.location.href = `/videoplayer/${videoId}`;
 
     }
     return (<div onClick={onclikeHandle}>
