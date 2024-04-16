@@ -12,7 +12,7 @@ const getVideoComments = asyncHandler(async (req, res) => {
    const response= await Comment.aggregate([
         {
             $match:{
-                $and: [{ video: Id }, { type: type }]
+                $and: [{ video: new mongoose.Types.ObjectId(Id) }, { type: type }]
             }
         },
        {
@@ -51,7 +51,7 @@ const getVideoComments = asyncHandler(async (req, res) => {
     if(!response){
         throw new ApiError(500, "something went wrong while get all comments")
     }
-    console.log("sdf",response)
+    // console.log("comment get ",response)
     return res.status(200).json(new ApiResponse(200, response, "the comment is Successfully get all comments "))
 })
 

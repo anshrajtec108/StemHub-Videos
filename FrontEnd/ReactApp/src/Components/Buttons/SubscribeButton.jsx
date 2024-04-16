@@ -4,11 +4,12 @@ import { BiSolidBellRing } from "react-icons/bi";
 import { makePostRequest } from '../../services/api';
 
 const SubscribeButton = (props) => {
-    const [subscribed, setSubscribed] = useState(props.isSubscribe || false);
-
+    const [subscribed, setSubscribed] = useState(props?.isSubscribe);
+    console.log("subscribed from SubscribeButton ",subscribed);
+    console.log("channelId from SubscribeButton ",props?.channelId);
     const handleClick = () => {
         setSubscribed(prevState => !prevState);
-        makePostRequest(`/subscriptions/c/${props.channelId}`)
+        makePostRequest(`/subscriptions/c/${props?.channelId}`)
     };
 
     return (

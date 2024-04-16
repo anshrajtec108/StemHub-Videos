@@ -6,47 +6,47 @@ import SubscribeButton from '../Buttons/SubscribeButton';
 import { useParams } from 'react-router-dom';
 
 const VideoPlayer = () => {
-    // const { videoId }=useParams()
-    const videoId = '65a7e7ae97ad7e3b03973411'
-    const [videoData, setVideoData] = useState({})
-    const [isSubscribed, setIsSubscribed]=useState(false)
-    const [isLiked, setIsLiked] = useState(false)
-
+    const { videoId } = useParams();
+    const [videoData, setVideoData] = useState({});
+    const [isSubscribed, setIsSubscribed] = useState(false);
+    const [isLiked, setIsLiked] = useState(false);
 
     const FetchVideoInfo = async () => {
-        makeGetRequest(`/videos/${videoId}`, {}, {})
-            .then((res) => {
-                console.log(res.data)
-                setVideoData(res.data)
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-    }
-    const isUserIsSubscribed =async()=>{
-        makeGetRequest(`/subscriptions/isSubscribed/${videoData.channelId}`, {}, {})
-            .then((res) => {
-                setIsSubscribed(res.data)
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-    }
-    const isVideoIsLikedByUser=async()=>{
-        makeGetRequest(`/likes/isVideoLiked/${videoId}`,{},{})
-        .then((res)=>{
-            setIsLiked(res.data)
-        })
-        .catch((error)=>{
+        try {
+            const res = await makeGetRequest(`/videos/${videoId}`, {}, {});
+            console.log(res.data);
+            setVideoData(res.data[0]);
+            if (res.data && videoData) {
+                // Only make additional API calls if videoData contains valid data
+                await isUserIsSubscribed(res.data.channelId);
+                await isVideoIsLikedByUser(videoId);
+            }
+        } catch (error) {
             console.log(error);
-        })
+        }
+    };
 
-    }
+    const isUserIsSubscribed = async (channelId) => {
+        try {
+            const res = await makeGetRequest(`/subscriptions/isSubscribed/${channelId}`, {}, {});
+            setIsSubscribed(res.data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const isVideoIsLikedByUser = async (videoId) => {
+        try {
+            const res = await makeGetRequest(`/likes/isVideoLiked/${videoId}`, {}, {});
+            setIsLiked(res.data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     useEffect(() => {
-        FetchVideoInfo()
-        isUserIsSubscribed()
-        isVideoIsLikedByUser()
-    }, [])
+        FetchVideoInfo();
+    }, [videoId]); 
 
     return (
         <div style={{
@@ -91,7 +91,7 @@ const VideoPlayer = () => {
                     </div>
                     <div className="rightButton" style={{display:'flex', flex: '5', alignItems: "end", marginLeft:'12px'}}>
                         <div className="likeButoon" style={{flex:'1',}}>
-                            <LikeButton likeCount={videoData.likesCount || "E"} isLiked={isLiked} />
+                            <LikeButton likeCount={videoData?.likesCount } isLiked={isLiked} />
                         </div>
                         <div className="shareButton" style={{ flex: '1' ,}}>
                             <ShareButton/>

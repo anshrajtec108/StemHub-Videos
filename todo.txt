@@ -1,0 +1,7 @@
+create comment display on frontEnd
+recommetion for home and videoPlayer side
+uplode video 
+change the user details 
+display sideBar
+display history 
+create history 

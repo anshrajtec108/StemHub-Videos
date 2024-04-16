@@ -1,9 +1,11 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function SmallCardThumbnail(props) {
+    const navigate= useNavigate()
     const handleClick = () => {
         let videoId = props.videos?._id;
-        window.location.href = `/videoplayer/${videoId}`;
+       navigate(`/videoplayer/${videoId}`);
     };
     function calculateTimeDifference(updatedAt) {
         const currentDate = new Date();

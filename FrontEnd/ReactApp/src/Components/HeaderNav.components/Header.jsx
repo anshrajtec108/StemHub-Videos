@@ -5,7 +5,7 @@ import { useState } from "react";
 
 
 function Header(props) {
-  console.log("data from header ",props.data)
+  // console.log("data from header ",props.data)
   const [show, setshow] = useState(false)
   function handle_avatar() {
     if (show) {

@@ -6,7 +6,7 @@ const LikeButton = (props) => {
     // const {videoId}=useParams()
     let videoId ='65a73ee3bcd971f56a10ad1e'
     const [liked, setLiked] = useState(props.isLiked || false);
-    const [likeCount, setLikeCount] = useState(props.likeCount);
+    const [likeCount, setLikeCount] = useState(props.likeCount ||0);
 
     const handleLikeClick = () => {
         setLiked(!liked);

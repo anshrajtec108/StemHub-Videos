@@ -1,13 +1,16 @@
 import { useState } from 'react';
-
+import Cookies from 'js-cookie';
 
 import axios from 'axios';
 import './Register.css'
 import { makePostRequest } from '../../services/api';
 import { URLS } from '../../constants/Urls';
-// import Header from '../../Components/HeaderNav/Header';
-// import Home from '../Home/Home';
+import { useNavigate } from 'react-router-dom';
+
+
+
 function Login() {
+  const navigator= useNavigate()
   const [data, setdata] = useState("")
   const [nameData, setNameData] = useState("")
   const [password, setpassword] = useState("")
@@ -23,8 +26,9 @@ function Login() {
     makePostRequest(login_URL, {}, sendTheData, {})
       .then((res) => {
         if (res.success) {
-          // history.push('/home', { data: res.data });
-          console.log(res.data)
+          Cookies.set('accessToken', res.data?.accessToken);
+          return navigator('/');
+          // console.log(res.data)
         }
       }).catch((error) => {
         console.log(error);

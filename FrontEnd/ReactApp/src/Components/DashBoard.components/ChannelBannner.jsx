@@ -1,6 +1,8 @@
 import React from 'react'
 import './DashBoard.css'
 import SubscribeButton from '../Buttons/SubscribeButton'
+
+
 function ChannelBannner() {
     return (<div >
         <div style={{ margin: "8px", backgroundSize: "cover", height: "170px", width: "90%", display: "flex", alignItems:"flex-end" }}>
@@ -15,7 +17,7 @@ function ChannelBannner() {
             <div id="center" style={{alignItems:"start"}}>
                 <p id='channelDescription' >Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima quia laboriosam placeat. Optio necessitatibus nisi nobis deserunt impedit, ea totam ratione magni quaerat vel eveniet quia debitis beatae. Magnam, quod.</p>
                 <div id="subscribeInfo">
-                    <SubscribeButton/>
+                    <SubscribeButton />
                 </div>
             </div>
             <div id="right">

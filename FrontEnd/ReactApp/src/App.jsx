@@ -18,6 +18,9 @@ import VideoPlayer from './Components/CardThumbnail/VideoPlayer.jsx';
 import Loader from './Components/CardThumbnail/Loader.jsx';
 import SmallCardThumbnail from './Components/CardThumbnail/smallCardThumbnail.jsx';
 import PlaylistLists from './Components/DashBoard.components/PlaylistLists.jsx';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import ProtectedRoute from './services/ProtectedRoute.jsx';
+import CommentList from './Components/Comment/Comment.jsx';
 
 
 // import AutoEvent from './Components/testing/AutoEvent.jsx';
@@ -32,7 +35,7 @@ function App() {
   const router=createBrowserRouter([
     {
       path:'/',
-      element:<Layout/>,
+      element: <ProtectedRoute Component={Layout}></ProtectedRoute>,
       children:[
         {
           path:"",
@@ -46,7 +49,19 @@ function App() {
           path:'/playlist',
           element:<PlayList/>
         },
+        {
+          path: '/dashboard/:userId',
+          element: <ChannelView />
+        },
+        {
+          path: '/videoplayer/:videoId',
+          element: <VideoPlayer />
+        },
       ]
+    },
+    {
+      path:'/login',
+      element:<Login/>
     }
   ])
 
@@ -65,10 +80,16 @@ function App() {
     {/* <ChannelView/> */}
     {/* <VideoPlayer/>    */}
     {/* <SmallCardThumbnail/> */}
-    <PlaylistLists/>
+    {/* <PlaylistLists/> */}
      {/* <Loader/> */}
     {/* <LiveStream/> */}
     {/* <RTMPVideoPlayer/> */}
+
+    <CommentList/>
+
+    {/* <RouterProvider router={router}>
+
+    </RouterProvider> */}
 </>
   )}
 
