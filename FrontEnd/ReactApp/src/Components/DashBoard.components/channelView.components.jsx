@@ -3,7 +3,7 @@ import VideoList from "./VideoList"
 
 
 const ChannelView = () => {
-  const channelId = `/dashboard/${userId}`;
+  // const channelId = `/dashboard/${userId}`;
   return (
     <div>
       <ChannelBannner/>

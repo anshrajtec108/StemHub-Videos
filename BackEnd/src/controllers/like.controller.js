@@ -7,6 +7,7 @@ import {asyncHandler} from "../utils/asyncHandler.js"
 const toggleVideoLike = asyncHandler(async (req, res) => {
     const {videoId} = req.params
     //TODO: toggle like on video
+    console.log("toggleVideoLike",videoId);
     const isliked=await Like.findOne({video:videoId,likedBy:req.user?._id})
    console.log(isliked)
     if(isliked){
@@ -75,6 +76,7 @@ const getLikedVideos = asyncHandler(async (req, res) => {
 
 const isVideoLikedByUser=asyncHandler(async(req,res)=>{
     const { videoId } = req.params
+    console.log("isVideoLikedByUser",videoId)
     let responeData=false
     const like = await Like.findOne({ video: videoId }, { likedBy :req.user?._id})
     if(like){

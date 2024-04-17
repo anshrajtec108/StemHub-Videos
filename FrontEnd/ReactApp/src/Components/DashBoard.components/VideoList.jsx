@@ -6,8 +6,8 @@ import { URLS } from "../../constants/Urls";
 import Loader from "../CardThumbnail/Loader";
 
 function VideoList(props) {
-    // const { userId } = useParams()
-    const userId = '659ac647a7b9efbbfd8d7297';
+    const { userId } = useParams()
+    // const userId = '659ac647a7b9efbbfd8d7297';
     const [videoList, setVideoList] = useState([]);
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(true);

@@ -7,14 +7,18 @@ import {asyncHandler} from "../utils/asyncHandler.js"
 const getVideoComments = asyncHandler(async (req, res) => {
     //TODO: get all comments for a video
     const {Id} = req.params
-    const { page = 1, limit = 10, type = "video" } = req.query
-    
+    const { page = 1, type = "video" } = req.query
+    let limit = 10
+    console.log(page,type,Id);
    const response= await Comment.aggregate([
         {
             $match:{
                 $and: [{ video: new mongoose.Types.ObjectId(Id) }, { type: type }]
             }
         },
+       {
+           $sort: { createdAt: -1 }
+       },
        {
            $lookup: {
                from: "users",
@@ -79,10 +83,34 @@ const addComment = asyncHandler(async (req, res) => {
             owner:req.user?._id
     })}
 
-    if(!response){
+    const result = await Comment.aggregate([
+        {
+            $match: {
+                _id:new mongoose.Types.ObjectId(response?._id)
+            }
+        },
+        {
+            $lookup: {
+                from: "users",
+                localField: "owner",
+                foreignField: "_id",
+                as: "owner",
+                pipeline: [
+                    {
+                        $project: {
+                            fullName: 1,
+                            username: 1,
+                            avatar: 1
+                        }
+                    }
+                ]
+            }
+        },
+    ])
+    if (!result){
         throw new ApiError(500,"something went wrong while adding comment  ")
     }
-    return res.status(200).json(new ApiResponse(200, response,"the comment is Successfully added "))
+    return res.status(200).json(new ApiResponse(200, result,"the comment is Successfully added "))
 })
 const updateComment = asyncHandler(async (req, res) => {
     // TODO: update a comment

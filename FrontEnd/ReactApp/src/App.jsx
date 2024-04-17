@@ -85,11 +85,11 @@ function App() {
     {/* <LiveStream/> */}
     {/* <RTMPVideoPlayer/> */}
 
-    <CommentList/>
+    {/* <CommentList/> */}
 
-    {/* <RouterProvider router={router}>
+    <RouterProvider router={router}>
 
-    </RouterProvider> */}
+    </RouterProvider>
 </>
   )}
 

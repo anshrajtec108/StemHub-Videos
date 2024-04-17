@@ -7,6 +7,10 @@ function CardThumbnail(props) {
         window.location.href = `/videoplayer/${videoId}`;
 
     }
+    // function SendToPlayListUserAcc() {
+    //     let userId = playlistdata.playListOwner[0]?._id;
+    //     navigate(`/dashboard/${userId}`);
+    // }
     return (<div onClick={onclikeHandle}>
 
 

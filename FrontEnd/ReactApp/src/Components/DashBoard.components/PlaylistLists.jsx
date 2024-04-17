@@ -88,7 +88,6 @@ function PlaylistLists() {
   function SendToPlayListUserAcc(){
     let userId = playlistdata.playListOwner[0]?._id ;
     navigate(`/dashboard/${userId}`);
-
   }
   return (
     <div className="main-container" style={{ height: '500px', width: '380px', overflowY: 'auto', backgroundColor: '#f0f0f0', padding: '10px', borderRadius: '10px', WebkitOverflowScrolling: 'touch' }}>

@@ -3,7 +3,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { User } from "../models/user.model.js";
 
-// _ === res {when we have use of res we can use _ }
+// _ === res {when we have no use of res we can use _ }
 export const verifyJWT=asyncHandler(async(req,_,next)=>{
    try {
     const token= req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ","")

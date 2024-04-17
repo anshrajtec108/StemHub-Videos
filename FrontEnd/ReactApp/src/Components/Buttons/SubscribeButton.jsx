@@ -1,10 +1,18 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaBell } from 'react-icons/fa';
 import { BiSolidBellRing } from "react-icons/bi";
 import { makePostRequest } from '../../services/api';
 
 const SubscribeButton = (props) => {
-    const [subscribed, setSubscribed] = useState(props?.isSubscribe);
+    console.log("(props?.isSubscribe ", props?.isSubscribe);
+    const [subscribed, setSubscribed] = useState(false);
+    useEffect(() => {
+        if (props?.isSubscribe === true) {
+            setSubscribed(true);
+        } else {
+            setSubscribed(false);
+        }
+    }, [props?.isSubscribe]);
     console.log("subscribed from SubscribeButton ",subscribed);
     console.log("channelId from SubscribeButton ",props?.channelId);
     const handleClick = () => {

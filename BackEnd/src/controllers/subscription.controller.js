@@ -9,7 +9,7 @@ import {asyncHandler} from "../utils/asyncHandler.js"
 const toggleSubscription = asyncHandler(async (req, res) => {
     const {channelId} = req.params
     // TODO: toggle subscription
-    console.log(channelId);
+    console.log("toggleSubscription",channelId);
      const channel=await User.findById(channelId);
      if(!channel){
         throw ApiError(400,"the channel don't exist")
@@ -126,6 +126,7 @@ const  getSubscribedChannels = asyncHandler(async (req, res) => {
 //get the user is subscribered to channel (true/flase)
 const isChannelisSubscribedByUser=asyncHandler(async(req,res)=>{
     const {channelId}=req.params
+    console.log("isChannelisSubscribedByUser",channelId);
     let respone=false
     const subscriber = await Subscription.findOne({ channel: channelId }, { subscriber :req.user?._id})
     if(subscriber){

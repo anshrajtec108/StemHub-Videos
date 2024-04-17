@@ -16,18 +16,18 @@ const recommendation = asyncHandler(async (req, res) => {
     page = parseInt(page) || 1;
     limit = parseInt(limit) || 2;
 
-    let latestVideos, popularVideos, recommendations;
+    let latestVideos, popularVideos, recommendationsResult;
 
     if (userId) {
         // Get user's watch history if user is authenticated
-        const user = await User.findById(userId).populate('watchHistory');
-        const watchHistory = user ? user.watchHistory.map(video => video._id) : [];
+        let user = await User.findById(userId).populate('watchHistory');
+        let watchHistory = user ? user.watchHistory.map(video => video._id) : [];
 
         // Define pagination options
-        const skip = (page - 1) * limit;
+        let skip = (page - 1) * limit;
 
         // Get personalized recommendations based on watch history with pagination
-        recommendation = await Video.aggregate([
+        recommendationsResult = await Video.aggregate([
             {
                 $match: {
                     _id: { $nin: watchHistory },
@@ -69,7 +69,7 @@ const recommendation = asyncHandler(async (req, res) => {
     }
 
     // Redefine pagination options outside the if block
-    const skip = (page - 1) * limit;
+    let skip = (page - 1) * limit;
 
    
     latestVideos = await Video.aggregate([
@@ -148,8 +148,8 @@ const recommendation = asyncHandler(async (req, res) => {
             }
         }
     ])
-
-    res.json({ success: true, latestVideos, popularVideos, recommendations });
+    return res.status(200)
+        .json({ success: true, latestVideos, popularVideos, recommendationsResult });
 });
 
 

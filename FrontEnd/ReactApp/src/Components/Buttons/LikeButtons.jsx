@@ -1,24 +1,33 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makePostRequest } from '../../services/api';
 import { useParams } from 'react-router-dom';
 
 const LikeButton = (props) => {
-    // const {videoId}=useParams()
-    let videoId ='65a73ee3bcd971f56a10ad1e'
-    const [liked, setLiked] = useState(props.isLiked || false);
-    const [likeCount, setLikeCount] = useState(props.likeCount ||0);
+    console.log("props.likeCount", props.likeCount);
+    const [liked, setLiked] = useState( false);
+    const [likeCount, setLikeCount] = useState(0);
+    
+    console.log("likeCount", likeCount);
+    useEffect(() => {
+        setLikeCount(props?.likeCount)
+        if (props?.isLiked === true) {
+            setLiked(true);
+        } else {
+            setLiked(false)
+        }
+        },[props?.isLiked]);
 
     const handleLikeClick = () => {
         setLiked(!liked);
         setLikeCount(liked ? likeCount - 1 : likeCount + 1);
-        makePostRequest(`/likes/toggle/v/${videoId}`)
+        makePostRequest(`/likes/toggle/v/${props.videoId}`)
     };
 
     return (
         <button
             onClick={handleLikeClick}
             style={{
-                width: '140px',
+                width: '100px',
                 height: '35px',
                 display: 'flex',
                 alignItems: 'center',
@@ -31,6 +40,7 @@ const LikeButton = (props) => {
                 fontWeight: '600',
                 cursor: 'pointer',
                 outline: 'none',
+                marginRight:"0px",
                 transition: 'background-color 0.2s, color 0.2s',
                 boxShadow: liked ? '0 0 5px rgba(0, 0, 0, 0.3)' : 'none',
             }}
