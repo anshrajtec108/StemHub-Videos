@@ -106,6 +106,13 @@ const addComment = asyncHandler(async (req, res) => {
                 ]
             }
         },
+        {
+            $addFields: {
+                owner: {
+                    $first: "$owner"
+                }
+            }
+        },
     ])
     if (!result){
         throw new ApiError(500,"something went wrong while adding comment  ")

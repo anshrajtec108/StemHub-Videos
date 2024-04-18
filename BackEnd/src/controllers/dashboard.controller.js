@@ -123,6 +123,7 @@ const getChannelVideos = asyncHandler(async (req, res) => {
                 duration: 1,
                 views: 1,
                 createdAt: 1,
+                'owner._id': 1,
                 'owner.username': 1,
                 'owner.avatar': 1
             }

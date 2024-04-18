@@ -1,28 +1,24 @@
-import { useEffect, useState } from "react";
-import CardThumbnail from "../CardThumbnail/CardThumbnail";
-import { makeGetRequest } from "../../services/api";
-import { useParams } from "react-router-dom";
-import { URLS } from "../../constants/Urls";
-import Loader from "../CardThumbnail/Loader";
+import React, { useEffect, useState } from 'react'
+import { makeGetRequest } from '../../services/api';
 
-function VideoList() {
-    const { userId } = useParams()
-    // const userId = '659ac647a7b9efbbfd8d7297';
+function VideoListForHome() {
+
     const [videoList, setVideoList] = useState([]);
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(true);
+    const [limit, setLimit] = useState(5)
 
     const fetchChannelVideoData = async () => {
         try {
-            const res = await makeGetRequest(`${URLS.getChannelvideoinfo}/?userId=${userId}&page=${page}&limit=${1}`, {}, {});
+            const res = await makeGetRequest(`/videos/?query=${query}&sortBy=${sort}`, {}, {});
             // console.log(`${ URLS.getChannelvideoinfo } / ${ userId }`);
-            console.log(res?.data)
-            if(videoList.length<=0){
-                setVideoList(res.data);
-            }else{
-                setVideoList((prev) => [...prev, ...res.data]);
+            console.log(res?.allVideos)
+            if (videoList.length <= 0) {
+                setVideoList(res.allVideos);
+            } else {
+                setVideoList((prev) => [...prev, ...res.allVideos]);
             }
-          
+
             setLoading(false);
         } catch (error) {
             console.log(error);
@@ -30,7 +26,7 @@ function VideoList() {
     };
 
     const handelInfiniteScroll = async () => {
-       
+
         try {
             if (
                 window.innerHeight + document.documentElement.scrollTop + 1 >=
@@ -76,8 +72,13 @@ function VideoList() {
     );
 }
 
+function Search() {
+    
+  return (
+    <div>
+      
+    </div>
+  )
+}
 
-
-
-
-export default VideoList;
+export default Search

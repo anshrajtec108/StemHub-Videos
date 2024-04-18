@@ -12,7 +12,8 @@ const recommendation = asyncHandler(async (req, res) => {
         userId = req.user._id;
     }
 
-    let { page, limit } = req.body;
+    let { page, limit } = req.query;
+    console.log('page, limit', page, limit);
     page = parseInt(page) || 1;
     limit = parseInt(limit) || 2;
 
@@ -148,8 +149,10 @@ const recommendation = asyncHandler(async (req, res) => {
             }
         }
     ])
+    const allVideos = [...latestVideos, ...popularVideos, ...recommendationsResult];
+
     return res.status(200)
-        .json({ success: true, latestVideos, popularVideos, recommendationsResult });
+        .json({ success: true, allVideos });
 });
 
 
@@ -180,9 +183,9 @@ const  getAllVideos = asyncHandler(async (req, res) => {
                   ],
                 },
               },
-            // {
-            //   $sort:sortOptions  
-            // },
+            {
+              $sort:sortOptions  
+            },
             {
                 $skip:(page-1)*limit
             },

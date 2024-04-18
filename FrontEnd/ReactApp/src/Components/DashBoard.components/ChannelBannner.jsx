@@ -1,31 +1,54 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './DashBoard.css'
 import SubscribeButton from '../Buttons/SubscribeButton'
+import { makeGetRequest } from '../../services/api'
+import { useParams } from 'react-router-dom'
 
 
 function ChannelBannner() {
-    return (<div >
-        <div style={{ margin: "8px", backgroundSize: "cover", height: "170px", width: "90%", display: "flex", alignItems:"flex-end" }}>
-            <img style={{ marginLeft:"12%",height:"100%", width: "100%", borderRadius:" 24px" }} src='data:image/jpeg;base64,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' alt='chnnelBanner' />
-        </div>
-        <div className="channelDetails" style={{ display: "flex", alignItems:"center"}}>
-            <div id="left" style={{ marginLeft: "10%", }}>
-                <div id="channelLogo" style={{height:"100px", width:"110px", objectFit:"fill"}}>
-                    <img style={{ marginLeft: "28%", borderRadius:"48%", height:"100%", width:"98%"}} src='data:image/png;base64,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' alt='logo'/>
-                </div>
-            </div>
-            <div id="center" style={{alignItems:"start"}}>
-                <p id='channelDescription' >Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima quia laboriosam placeat. Optio necessitatibus nisi nobis deserunt impedit, ea totam ratione magni quaerat vel eveniet quia debitis beatae. Magnam, quod.</p>
-                <div id="subscribeInfo">
-                    <SubscribeButton />
-                </div>
-            </div>
-            <div id="right">
+    const { userId } = useParams()
+    const [data,setData]=useState({})
 
+    async function fetchChannelData(){
+       try {
+           const res = await makeGetRequest(`/users/c/${userId}`,{},{})
+           if (res.statusCode <=200)
+           setData (res.data)
+           console.log("ChannelBannner",data);
+       } catch (error) {
+        alert(`ERROR from Channel Banner   ${error}`)
+           console.log("ERROR from Channel Banner ",error);
+       }
+    }
+    useEffect(()=>{
+        fetchChannelData()
+        console.log("from ChannelBannner ");
+    },[])
+
+    return (
+        <div>
+            <div style={{ margin: '8px', backgroundSize: 'cover', height: '190px', width: '95%', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
+                <img style={{ height: '100%', width: '100%', objectFit: 'cover', borderRadius: '8px' }} src={data.coverImage} alt='channelBanner' />
+            </div>
+            <div className="channelDetails" style={{ display: 'flex', justifyContent:'space-around',alignItems:'center',  marginTop: '10px' }}>
+                <div id="left" style={{ flex: '20' }}>
+                    <img style={{ height: '100px', width: '100px', objectFit: 'cover', borderRadius: '50%', margin:'12px' }} src={data.avatar} alt='logo' />
+                    <div>
+                        <p style={{ fontSize: '34px', color: '#777' ,flexDirection:'column'}}>{data.username}</p>
+                        <h2 style={{ marginBottom: '5px' }}>{data.fullName}</h2>
+                    </div>
+                    <div id="subscribeInfo" style={{marginLeft:'70px'}}>
+                        <SubscribeButton isSubscribe={data.issubscribed} channelId={userId} />
+                    </div>
+                </div>
+            
+                <div id="right" style={{ flex: '15' ,flexDirection:'column'}}>
+                    <p style={{ fontSize: '24px', color: '#887', }}>Subscribers: {data.subscribersCount}</p>
+                    <p style={{ fontSize: '24px', color: '#887', }}>Channels Subscribed To: {data.channelsSubscribedToCount}</p>
+                </div>
             </div>
         </div>
-    </div>
-    )
+    );
 }
 
 export default ChannelBannner

@@ -3,6 +3,7 @@ import Loader from '../CardThumbnail/Loader';
 import { makeGetRequest, makePostRequest } from '../../services/api';
 
 const Content=(props)=>{
+    console.log("props",props);
     function calculateTimeDifference(updatedAt) {
         const currentDate = new Date();
         const updatedDate = new Date(updatedAt);
@@ -39,7 +40,7 @@ const Content=(props)=>{
     <div>
         <article className="p-6 text-base rounded-lg dark:bg-gray-900">
             <footer className="flex justify-between items-center mb-2">
-                <div className="flex items-center">
+                <div className="flex items-center" >
                     <p className="inline-flex items-center mr-3 text-sm text-gray-100 dark:text-white font-semibold"><img
                         className="mr-2 w-6 h-6 rounded-full"
                             src={props.userDetails?.avatar}
@@ -119,7 +120,8 @@ const CommentList = (props) => {
         e.preventDefault()
         const res = await makePostRequest(`/comments/${props?.videoId}/?type=${type}`, {}, { content :inputComment},{})
         if (res.statusCode <=200){
-            setCommentData((prev) => [...res.data, ...prev,]);
+            await setCommentData((prev) => [res.data[0], ...prev,]);
+            console.log('comment post data is comming', commentData);
             setInputComment('')
         }
         else{

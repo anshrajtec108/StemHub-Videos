@@ -3,13 +3,17 @@ import { makePostRequest } from '../../services/api';
 import { useParams } from 'react-router-dom';
 
 const LikeButton = (props) => {
-    console.log("props.likeCount", props.likeCount);
+    console.log("props.likeCount", typeof (props.likeCount));
     const [liked, setLiked] = useState( false);
     const [likeCount, setLikeCount] = useState(0);
     
-    console.log("likeCount", likeCount);
+    
     useEffect(() => {
-        setLikeCount(props?.likeCount)
+        if (props?.likeCount === undefined || isNaN(props.likeCount)) {
+            setLikeCount(0);
+        } else {
+            setLikeCount(props.likeCount);
+        }
         if (props?.isLiked === true) {
             setLiked(true);
         } else {
@@ -22,7 +26,7 @@ const LikeButton = (props) => {
         setLikeCount(liked ? likeCount - 1 : likeCount + 1);
         makePostRequest(`/likes/toggle/v/${props.videoId}`)
     };
-
+    console.log("likeCount", likeCount);
     return (
         <button
             onClick={handleLikeClick}

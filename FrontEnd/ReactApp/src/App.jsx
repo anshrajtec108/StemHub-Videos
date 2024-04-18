@@ -84,7 +84,7 @@ function App() {
      {/* <Loader/> */}
     {/* <LiveStream/> */}
     {/* <RTMPVideoPlayer/> */}
-
+    {/* <CardThumbnail/> */}
     {/* <CommentList/> */}
 
     <RouterProvider router={router}>

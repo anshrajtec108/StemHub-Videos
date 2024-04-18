@@ -5,3 +5,6 @@ change the user details
 display sideBar
 display history 
 create history 
+
+
+add onclcke on userAvater the userDashboard display

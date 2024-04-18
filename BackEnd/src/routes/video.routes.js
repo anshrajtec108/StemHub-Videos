@@ -39,5 +39,5 @@ router
     .patch(upload.single("thumbnail"), updateVideo);
 
 router.route("/toggle/publish/:videoId").patch(togglePublishStatus);
-router.route("/recommendation/video").post(recommendation)
+router.route("/recommendation/video").get(recommendation)
 export default router
