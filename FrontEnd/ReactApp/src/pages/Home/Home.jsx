@@ -8,7 +8,7 @@ function VideoListForHome() {
   const [videoList, setVideoList] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
-  const [limit,setLimit]=useState(2)
+  const [limit,setLimit]=useState(3)
 
   const fetchChannelVideoData = async () => {
     try {

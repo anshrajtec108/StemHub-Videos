@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState={
-    playList: { _id:"65b67747a96e52ac6de06187"},
+    playList: {},
     video:{},
     rememberMeURL:"",
     rememberMEObj:{},

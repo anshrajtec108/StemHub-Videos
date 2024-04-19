@@ -3,13 +3,14 @@ import { makeGetRequest } from '../../services/api';
 import LikeButton from '../Buttons/LikeButtons';
 import ShareButton from '../Buttons/ShareButton';
 import SubscribeButton from '../Buttons/SubscribeButton';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import CommentList from '../Comment/Comment'
 
 
 const VideoPlayer = () => {
     const { videoId } = useParams();
     let channelId;
+    const navigator=useNavigate()
     const [videoData, setVideoData] = useState({});
     const [isSubscribed, setIsSubscribed] = useState('false');
     const [isLiked, setIsLiked] = useState(false);
@@ -64,7 +65,10 @@ const VideoPlayer = () => {
     useEffect(() => {
         FetchVideoInfo();
     }, []); 
-   
+    function SendToPlayListUserAcc() {
+        let userId = videoData.userId;
+        navigator(`/dashboard/${userId}`);
+    }
     return (
         <div className="main" style={{
             width: '99%',
@@ -112,7 +116,7 @@ const VideoPlayer = () => {
                     </p>
                 </div>
                 <div className="buttonsLSUS" style={{ height: "55px", width: "100%", display: 'flex', justifyItems: "space-between", alignItems: 'center' }}>
-                    <div className="channelDetails" style={{ display: "flex", flex: '2', justifyItems: "space-between", }}>
+                    <div className="channelDetails" style={{ display: "flex", flex: '2', justifyItems: "space-between", cursor: 'pointer' }} onClick={SendToPlayListUserAcc}>
                         <div className="avatar" style={{flex:1}}>
                             <img src={videoData.avatar || '/vite.svg'} style={{height:'40px',width:'40px', borderRadius:"50%"}}/>
                             </div>

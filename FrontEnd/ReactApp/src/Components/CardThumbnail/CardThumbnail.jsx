@@ -12,6 +12,7 @@ function CardThumbnail(props) {
     }
     function SendToPlayListUserAcc() {
         let userId = props.videoOwner?._id;
+        console.log("userId", userId);
         navigator(`/dashboard/${userId}`);
     }
     return (

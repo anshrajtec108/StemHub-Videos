@@ -21,6 +21,7 @@ import PlaylistLists from './Components/DashBoard.components/PlaylistLists.jsx';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import ProtectedRoute from './services/ProtectedRoute.jsx';
 import CommentList from './Components/Comment/Comment.jsx';
+import Search from './Components/HeaderNav.components/Search.jsx';
 
 
 // import AutoEvent from './Components/testing/AutoEvent.jsx';
@@ -57,6 +58,10 @@ function App() {
           path: '/videoplayer/:videoId',
           element: <VideoPlayer />
         },
+        {
+          path:'/search/:query/:newQuery',
+          element: <Search />
+        }
       ]
     },
     {
@@ -86,6 +91,7 @@ function App() {
     {/* <RTMPVideoPlayer/> */}
     {/* <CardThumbnail/> */}
     {/* <CommentList/> */}
+
 
     <RouterProvider router={router}>
 

@@ -1,22 +1,48 @@
 import React, { useEffect, useState } from 'react'
 import { makeGetRequest } from '../../services/api';
-
-function VideoListForHome() {
-
+import CardThumbnail from '../CardThumbnail/CardThumbnail';
+import Loader from '../CardThumbnail/Loader';
+import { useParams } from 'react-router-dom';
+var queryVar;
+var newQueryVar;
+function VideoListForSearch(props) {
+    const { searchQuery, newQuery } = props;
+    console.log("searchQuery",searchQuery);
     const [videoList, setVideoList] = useState([]);
     const [page, setPage] = useState(1);
+    const [queryToSE, setQuery] = useState('empty');
+    const [sortBy, setSortBy] = useState('createdAt');
+    const [sortType, setSortType] = useState('');
     const [loading, setLoading] = useState(true);
     const [limit, setLimit] = useState(5)
-
-    const fetchChannelVideoData = async () => {
+    const [reload,setReload]=useState(true)
+    // const [prevQuery, setPrevQuery] = useState('');
+   
+    const fetchSearchVideoData = async () => {
         try {
-            const res = await makeGetRequest(`/videos/?query=${query}&sortBy=${sort}`, {}, {});
-            // console.log(`${ URLS.getChannelvideoinfo } / ${ userId }`);
-            console.log(res?.allVideos)
-            if (videoList.length <= 0) {
-                setVideoList(res.allVideos);
-            } else {
-                setVideoList((prev) => [...prev, ...res.allVideos]);
+            // if (searchQuery) {
+            //     setQuery(searchQuery)
+            //     return;
+            // } else {
+            //     alert(`the query is required 2`)
+            // }
+            if (queryToSE) {
+            console.log('newQuery1', newQuery);
+            console.log('query1', queryToSE);
+                if (newQueryVar){
+                setVideoList([])
+                console.log('videoList', videoList, queryToSE);
+            }
+
+                const res = await makeGetRequest(`/videos/?query=${queryVar}&sortBy=${sortBy}&page=${page}&limit=${limit}&sortType=${sortType}`, {}, {});
+                console.log("data", res?.data)
+                if (videoList.length <= 0) {
+                    setVideoList(res.data);
+                } else {
+                    setVideoList((prev) => [...prev, ...res.data]);
+                }
+            }else{
+                alert(`the query is required 3`)
             }
 
             setLoading(false);
@@ -39,15 +65,15 @@ function VideoListForHome() {
             console.log(error);
         }
     };
+    useEffect(() => {
+        fetchSearchVideoData();
+    }, [page, searchQuery, sortBy, newQuery,]);
 
     useEffect(() => {
         window.addEventListener("scroll", handelInfiniteScroll);
         return () => window.removeEventListener("scroll", handelInfiniteScroll);
     }, []);
 
-    useEffect(() => {
-        fetchChannelVideoData();
-    }, [page]);
 
     return (
         <div style={{ "marginTop": "60px" }}>
@@ -73,11 +99,20 @@ function VideoListForHome() {
 }
 
 function Search() {
-    
+    const { query, newQuery } = useParams();
+    console.log('newQuery2', newQuery, 'query', query);
+    queryVar=query
+    newQueryVar=newQuery
   return (
-    <div>
-      
-    </div>
+      <div>
+          {query ? (
+              <VideoListForSearch searchQuery={query} newQuery={newQuery} />
+
+          ) : (
+              <p onClick={() => alert('The query is required')}>Click to show alert</p>
+          )}
+      </div>
+
   )
 }
 

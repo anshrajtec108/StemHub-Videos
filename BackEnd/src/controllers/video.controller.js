@@ -13,7 +13,7 @@ const recommendation = asyncHandler(async (req, res) => {
     }
 
     let { page, limit } = req.query;
-    console.log('page, limit', page, limit);
+    // console.log('page, limit', page, limit);
     page = parseInt(page) || 1;
     limit = parseInt(limit) || 2;
 
@@ -60,6 +60,7 @@ const recommendation = asyncHandler(async (req, res) => {
                     duration: 1,
                     views: 1,
                     createdAt: 1,
+                    'owner._id':1,
                     'owner.username': 1,
                     'owner.avatar': 1
                 }
@@ -105,6 +106,7 @@ const recommendation = asyncHandler(async (req, res) => {
                 duration: 1,
                 views: 1,
                 createdAt: 1,
+                'owner._id':1,
                 'owner.username': 1, 
                 'owner.avatar': 1 
             }
@@ -144,15 +146,24 @@ const recommendation = asyncHandler(async (req, res) => {
                 duration: 1,
                 views: 1,
                 createdAt: 1,
+                'owner._id':1,
                 'owner.username': 1,
                 'owner.avatar': 1
             }
         }
     ])
-    const allVideos = [...latestVideos, ...popularVideos, ...recommendationsResult];
+    const allVideos = [...popularVideos, ...latestVideos, ...recommendationsResult];
+    const filterUniqueVideos = (videos) => {
+        const uniqueVideosMap = new Map();
+        videos.forEach(video => uniqueVideosMap.set(video._id.toString(), video));
+        return Array.from(uniqueVideosMap.values());
+    };
 
-    return res.status(200)
-        .json({ success: true, allVideos });
+    // Filter out duplicate videos from allVideos array
+    const filteredAllVideos = filterUniqueVideos(allVideos);
+
+    // Respond with the filtered allVideos array
+    return res.status(200).json({ success: true, allVideos: filteredAllVideos });
 });
 
 
@@ -162,17 +173,24 @@ const  getAllVideos = asyncHandler(async (req, res) => {
     //sorting is pending
     let sortOptions={}
     let basequery={}
+    function escapeRegExp(string) {
+        return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    }
     if(sortBy){
         sortOptions[sortBy] = sortType == "desc" ? -1 : 1;
     }
- 
-    if(query){
-        basequery.$or=[
-            {title:{$regex : query,$options:"i"}},
-            {description:{$regex:query,$options:"i"}}
-        ];;
-    }
+    //  /$options:"i"
+    if (query) {
+        // Escape special characters in the query
+     
 
+        // Add the regular expression pattern to the base query
+        basequery.$or = [
+            { title: { $regex: query, $options: "i" } },
+            { description: { $regex: query, $options: "i" } }
+        ];
+    }
+    console.log('basequery', query );
     try {
         const result= await Video.aggregate([
             {
@@ -187,12 +205,37 @@ const  getAllVideos = asyncHandler(async (req, res) => {
               $sort:sortOptions  
             },
             {
+                $lookup: {
+                    from: "users",
+                    localField: 'owner',
+                    foreignField: '_id',
+                    as: 'owner'
+                }
+            },
+            {
+                $unwind: '$owner' // If each video has only one owner
+            },
+            {
                 $skip:(page-1)*limit
             },
             {
                 $limit:parseInt(limit)
             },
+            {
+                $project: {
+                    title: 1,
+                    thumbnail: 1,
+                    description: 1,
+                    duration: 1,
+                    views: 1,
+                    createdAt: 1,
+                    'owner._id':1,
+                    'owner.username': 1,
+                    'owner.avatar': 1
+                }
+            }
         ])
+        console.log('result search', result);
         return res.status(200)
         .json(new ApiResponse(200,result,"Success"))
         
@@ -293,6 +336,7 @@ const getVideoById = asyncHandler(async (req, res) => {
                 title: 1,
                 description: 1,
                 views: 1,
+                userId:'$channelOwner._id',
                 username: '$channelOwner.username', 
                 avatar: '$channelOwner.avatar' ,
                 channelId:'$channelOwner._id',
