@@ -265,7 +265,7 @@ const publishAVideo = asyncHandler(async (req, res) => {
     if(!uploadTocloudVideo && !uploadTocloudthumbnail){
         throw new ApiError(500 ,"something went wrong while uploading the video and thumnail ")
     }
-
+   
     const video= await Video.create({
         videoFile:uploadTocloudVideo.url,
         thumbnail:uploadTocloudthumbnail.url,

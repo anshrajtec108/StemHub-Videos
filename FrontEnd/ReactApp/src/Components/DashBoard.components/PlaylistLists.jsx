@@ -90,7 +90,7 @@ function PlaylistLists() {
     navigate(`/dashboard/${userId}`);
   }
   return (
-    <div className="main-container" style={{ height: '500px', width: '380px', overflowY: 'auto', backgroundColor: '#f0f0f0', padding: '10px', borderRadius: '10px', WebkitOverflowScrolling: 'touch' }}>
+    <div className="main-container" style={{ height: '90vh', width: '100vh', overflowY: 'auto', backgroundColor: '#f0f0f0', padding: '10px', borderRadius: '10px', WebkitOverflowScrolling: 'touch' }}>
       <style>
         {`
                 /* Style the scrollbar for .main-container */

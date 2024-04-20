@@ -1,17 +1,42 @@
+.sidebar {
+  position: absolute;
+  z-index: 999;
+  top: 0;
+  left: -250px; /* Initially hidden */
+  height: 100%;
+  width: 250px;
+  background-color: #000000; /* Dark background */
+  transition: left 0.3s ease-in-out;
+}
 
-#main{
-    height: 100vh;
-    width: 70px;
-    color: #fff;
-    /* align-items: first baseline; */
-    display: ;
-    background-color: rgb(228, 0, 0);
+.sidebar.active {
+  left: 0; /* Displayed when active */
 }
-.name{
-    color: #fff;
-    display: flex;
+
+.firstNav {
+  margin-top: 20px;
+  padding: 10px;
 }
-.icon{
-    color: #fff;
-    display: flex;
+
+.home h3 {
+  color: #fff;
+  padding-left: 15px;
 }
+
+.icon {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.name {
+ 
+  color: #fff;
+  padding: 8px 0;
+  transition: background-color 0.3s;
+}
+
+.name:hover {
+  background-color: #444;
+}
+
+/* Add styles for other sidebar sections as needed */

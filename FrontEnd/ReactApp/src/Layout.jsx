@@ -8,7 +8,7 @@ function Layout() {
   return (
     <div>
       <Header/>
-      {/* <SideBar/> */}
+      <SideBar/>
       <Outlet/>
     </div>
   )

@@ -22,6 +22,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import ProtectedRoute from './services/ProtectedRoute.jsx';
 import CommentList from './Components/Comment/Comment.jsx';
 import Search from './Components/HeaderNav.components/Search.jsx';
+import VideoUpload from './Components/CardThumbnail/VideoUpload.jsx';
 
 
 // import AutoEvent from './Components/testing/AutoEvent.jsx';
@@ -61,6 +62,10 @@ function App() {
         {
           path:'/search/:query/:newQuery',
           element: <Search />
+        },
+        {
+          path:'/video/upload',
+          element: <VideoUpload />
         }
       ]
     },
@@ -91,6 +96,7 @@ function App() {
     {/* <RTMPVideoPlayer/> */}
     {/* <CardThumbnail/> */}
     {/* <CommentList/> */}
+   
 
 
     <RouterProvider router={router}>

@@ -1,7 +1,8 @@
 import { Menu, SearchOutlined, VideoCallSharp, NotificationsActiveOutlined, Close } from "@mui/icons-material";
 import './Header.css'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import SideBar from '../SideBar.components/SideBar';
 
 
 
@@ -35,12 +36,23 @@ function Header(props) {
       setSearchTerm('')
     }
   };
+  const [showSidebar, setShowSidebar] = useState(false);
+
+  // No need for a cleanup function in this case
+  useEffect(() => {
+    console.log('showSidebar updated:', showSidebar);
+  }, [showSidebar]);
+
+  const handleToggleSidebar = () => {
+    console.log('handleToggleSidebar');
+    setShowSidebar(!showSidebar);
+  };
 
  
   return (<>
     <div id='headerMain' style={{ height: "56px" }}>
       <div id="left">
-        <div id="menu">
+        <div id="menu" onClick={handleToggleSidebar}>
           <Menu />
         </div>
         <div id="logo">

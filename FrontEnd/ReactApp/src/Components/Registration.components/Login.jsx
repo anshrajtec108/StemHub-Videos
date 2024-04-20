@@ -31,6 +31,7 @@ function Login() {
           // console.log(res.data)
         }
       }).catch((error) => {
+        alert(`ERROR FROM LOGIN error:${error}`)
         console.log(error);
       })
   };

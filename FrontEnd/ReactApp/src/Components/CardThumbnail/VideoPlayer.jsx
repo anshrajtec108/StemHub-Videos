@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { makeGetRequest } from '../../services/api';
+import { makeGetRequest, makePostRequest } from '../../services/api';
 import LikeButton from '../Buttons/LikeButtons';
 import ShareButton from '../Buttons/ShareButton';
 import SubscribeButton from '../Buttons/SubscribeButton';
@@ -61,9 +61,16 @@ const VideoPlayer = () => {
             console.log(error);
         }
     };
-
+    
+    const addToHistory=async()=>{
+        const res = await makePostRequest('/histoty/onPlayViedo', {}, { "videoId": videoId },{})
+        if (res.statusCode>200){
+            alert('ERROR in add the History')
+        }
+    }
     useEffect(() => {
         FetchVideoInfo();
+        addToHistory()
     }, []); 
     function SendToPlayListUserAcc() {
         let userId = videoData.userId;
@@ -108,10 +115,10 @@ const VideoPlayer = () => {
                     style={{ width: '95%', height: '357px', marginLeft: "10px", marginTop: "10px", border: "1px", borderRadius: "14px" }}
                     src={videoData.videoFile ||"http://res.cloudinary.com/dr4krsosv/video/upload/v1705500160/rrgkegqrweyuctxs4tjw.mp4"}
                 ></video>
-                <div style={{ width: '634px',marginBottom:'0px' }}><h2 >
+                <div style={{ width: '634px',marginBottom:'0px' ,cursor:'text' }}><h1 >
                   {videoData.title || "the title is missing error "}
-                </h2>
-                    <p>
+                </h1>
+                    <p style={{fontSize:'12px'}}>
                         {videoData.description || "the description is missing error "}
                     </p>
                 </div>

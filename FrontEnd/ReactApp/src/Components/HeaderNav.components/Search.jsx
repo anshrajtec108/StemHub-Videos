@@ -6,11 +6,10 @@ import { useParams } from 'react-router-dom';
 var queryVar;
 var newQueryVar;
 function VideoListForSearch(props) {
-    const { searchQuery, newQuery } = props;
+
     console.log("searchQuery",searchQuery);
     const [videoList, setVideoList] = useState([]);
     const [page, setPage] = useState(1);
-    const [queryToSE, setQuery] = useState('empty');
     const [sortBy, setSortBy] = useState('createdAt');
     const [sortType, setSortType] = useState('');
     const [loading, setLoading] = useState(true);
@@ -26,12 +25,12 @@ function VideoListForSearch(props) {
             // } else {
             //     alert(`the query is required 2`)
             // }
-            if (queryToSE) {
-            console.log('newQuery1', newQuery);
-            console.log('query1', queryToSE);
+            if (queryVar) {
+            console.log('newQueryVar1', newQueryVar);
+            console.log('query1', queryVar);
                 if (newQueryVar){
                 setVideoList([])
-                console.log('videoList', videoList, queryToSE);
+                console.log('videoList', videoList, queryVar);
             }
 
                 const res = await makeGetRequest(`/videos/?query=${queryVar}&sortBy=${sortBy}&page=${page}&limit=${limit}&sortType=${sortType}`, {}, {});
@@ -67,7 +66,7 @@ function VideoListForSearch(props) {
     };
     useEffect(() => {
         fetchSearchVideoData();
-    }, [page, searchQuery, sortBy, newQuery,]);
+    }, [page, searchQuery, sortBy, newQueryVar,]);
 
     useEffect(() => {
         window.addEventListener("scroll", handelInfiniteScroll);
@@ -100,13 +99,13 @@ function VideoListForSearch(props) {
 
 function Search() {
     const { query, newQuery } = useParams();
-    console.log('newQuery2', newQuery, 'query', query);
+    console.log('newQueryVar2', newQueryVar, 'query', query);
     queryVar=query
     newQueryVar=newQuery
   return (
       <div>
           {query ? (
-              <VideoListForSearch searchQuery={query} newQuery={newQuery} />
+              <VideoListForSearch  />
 
           ) : (
               <p onClick={() => alert('The query is required')}>Click to show alert</p>

@@ -1,50 +1,46 @@
 import { HomeMaxOutlined, Subscriptions, VideoCallSharp } from "@mui/icons-material";
 import { Link } from "react-router-dom";
-import './Sidebar.css';
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import "./Sidebar.css";
 
-function SideBar() {
-  const [istrue , setIstre]=useState(true)
-  let HomeMenuItem = [
+function SideBar({ sideBar }) {
+  console.log('sideBar prop:', sideBar);
+  const [isTrue, setIsTrue] = useState(true);
+  useEffect(() => {
+    console.log('props.sideBar', sideBar);
+  }, [sideBar]);
+  let homeMenuItems = [
     {
-      path: '/',
+      path: "/",
       name: "Home",
       icon: <HomeMaxOutlined />,
     },
     {
-      path: '/shorts',
+      path: "/shorts",
       name: "Shorts",
       icon: <VideoCallSharp />,
     },
     {
-      path: '/subscription',
+      path: "/subscription",
       name: "Subscription",
       icon: <Subscriptions />,
-    }
+    },
   ];
 
   return (
-    <div id=" page-size main ">
-      <div id="firstNav">
-        <div id="home">
+    <div className={`sidebar`} style={{ display: `${isTrue ? "block" : "none"}` }}>
+      <div className="firstNav">
+        <div className="home">
           <h3>Home</h3>
-          {HomeMenuItem.map((item, index) => {
-            console.log(index, item);
-            return (
-              <>
-                <Link to={item.path} key={index}>
-                  <div className="icon" key={index + 2}>{item.icon}</div>
-                  <div className="name" style={istrue ? { "display": "block" ,"backgroundColor":"red"} : { "display": "none" }} key={index + 3}>{item.name}</div>
-                </Link>
-              </>
-            );
-          })}
+          {homeMenuItems.map((item, index) => (
+            <Link to={item.path} key={index}>
+              <div className="icon">{item.icon}</div>
+              <div className="name">{item.name}</div>
+            </Link>
+          ))}
         </div>
       </div>
-      <div id="you"></div>
-      <div id="subscription"></div>
-      <div id="explore"></div>
-      <div id="settings"></div>
+      {/* Other sidebar sections go here */}
     </div>
   );
 }
