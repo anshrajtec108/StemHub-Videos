@@ -23,6 +23,7 @@ import ProtectedRoute from './services/ProtectedRoute.jsx';
 import CommentList from './Components/Comment/Comment.jsx';
 import Search from './Components/HeaderNav.components/Search.jsx';
 import VideoUpload from './Components/CardThumbnail/VideoUpload.jsx';
+import History from './pages/History/History.jsx';
 
 
 // import AutoEvent from './Components/testing/AutoEvent.jsx';
@@ -66,6 +67,10 @@ function App() {
         {
           path:'/video/upload',
           element: <VideoUpload />
+        },
+        {
+          path:'/user/history',
+          element:<History/>
         }
       ]
     },

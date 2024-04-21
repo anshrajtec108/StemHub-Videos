@@ -5,6 +5,7 @@ const initialState={
     video:{},
     rememberMeURL:"",
     rememberMEObj:{},
+    sideBar:false
 }
 
 const currentPlayInfoSlice=createSlice({
@@ -38,6 +39,14 @@ const currentPlayInfoSlice=createSlice({
                     }
                 }
             }
+        },
+        savesideBarStatus(state,payLoad){
+            if (payLoad) {
+            return{
+                ...state,
+                sideBar: !state.sideBar
+            }
+        }
         }
     }
 })
@@ -45,7 +54,8 @@ const currentPlayInfoSlice=createSlice({
 export const {
     savePlayList,
     saveRememberMeURL,
-    saveRememberMEObj
+    saveRememberMEObj,
+    savesideBarStatus
 
 }=currentPlayInfoSlice.actions;
 

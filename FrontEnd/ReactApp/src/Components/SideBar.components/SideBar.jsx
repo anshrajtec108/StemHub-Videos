@@ -1,14 +1,17 @@
-import { HomeMaxOutlined, Subscriptions, VideoCallSharp } from "@mui/icons-material";
+import { HomeMaxOutlined, Subscriptions, Tune, VideoCallSharp } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./Sidebar.css";
+import { Menu } from "@mui/icons-material";
+import { useDispatch, useSelector } from "react-redux";
+import { savesideBarStatus } from "../../store/reducers/currentPlayinfo";
 
-function SideBar({ sideBar }) {
-  console.log('sideBar prop:', sideBar);
-  const [isTrue, setIsTrue] = useState(true);
-  useEffect(() => {
-    console.log('props.sideBar', sideBar);
-  }, [sideBar]);
+function SideBar() {
+
+  let sideBarStore = useSelector((store) => store.currentPlayinfo);
+  let sideBarStatus =sideBarStore.sideBar
+  console.log("sideBarStatus", sideBarStatus);
+  let dispatch = useDispatch()
   let homeMenuItems = [
     {
       path: "/",
@@ -26,12 +29,20 @@ function SideBar({ sideBar }) {
       icon: <Subscriptions />,
     },
   ];
-
+  const handleToggleSidebar = () => {
+    console.log('handleToggleSidebar');
+    dispatch(savesideBarStatus())
+  };
   return (
-    <div className={`sidebar`} style={{ display: `${isTrue ? "block" : "none"}` }}>
+    <div className={`sidebar`} style={{ display: sideBarStatus ? 'block' : 'none' }}>
+      <div id="menu" onClick={handleToggleSidebar} style={{ margin: '10px' }}>
+        <Menu />
+      </div>
       <div className="firstNav">
+      
         <div className="home">
           <h3>Home</h3>
+          
           {homeMenuItems.map((item, index) => (
             <Link to={item.path} key={index}>
               <div className="icon">{item.icon}</div>

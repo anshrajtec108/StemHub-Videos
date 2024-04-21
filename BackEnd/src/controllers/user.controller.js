@@ -370,6 +370,12 @@ const getUserChannelProfile=asyncHandler(async(req,res)=>{
 })
 
 const getWatchHistory=asyncHandler(async(req,res)=>{
+
+    let { page, limit } = req.query;
+    console.log('page, limit', page, limit);
+    page = parseInt(page) || 1;
+    limit = parseInt(limit) || 5;
+    let skip = (page - 1) * limit;
     const user = await User.aggregate([
         {
             $match:{
@@ -383,6 +389,7 @@ const getWatchHistory=asyncHandler(async(req,res)=>{
                     foreignField:"_id",
                     as:"watchHistory",
                     pipeline:[
+                      
                         {
                             $lookup:{
                                 from:"users",
@@ -406,15 +413,34 @@ const getWatchHistory=asyncHandler(async(req,res)=>{
                                     $first:"$owner"
                                 }
                             }
-                        }
+                        },
+                       
                     ]
-                }
-         }
+                },
+                
+         },
+        {
+            $sort: { updatedAt: -1 }
+        },
+        {
+            $skip: skip
+        },
+        {
+            $limit: limit
+        },
+    
     ])
 
+    let result = user[0]?.watchHistory
+    if (!user || !user[0] || !user[0].watchHistory) {
+        result={}
+        throw new ApiError(500,"User or watch history not found.");
+    }
     return res.status(200)
     .json(
-        new ApiResponse(200,user[0].watchHistory,"Watch history fetched successfully")
+        // new ApiResponse(200,user[0].watchHistory,"Watch history fetched successfully")
+        new ApiResponse(200, result, "Watch history fetched successfully")
+
     )
 })
 

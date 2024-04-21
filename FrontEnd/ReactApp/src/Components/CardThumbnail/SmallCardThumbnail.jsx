@@ -61,24 +61,24 @@ function SmallCardThumbnail(props) {
     }
     return (
         <div className="card-container" style={{ height: '100%', width: '100%', display: 'flex', alignItems: 'center', borderRadius: '5px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', marginTop: "20px", backgroundColor: '#ffffff', overflow: 'hidden' }}>
-            <div onClick={handleClick} style={{ height: '180px', width: '350px', display: 'flex', alignItems: 'center', borderRadius: '5px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', marginTop: "20px", backgroundColor: '#ffffff', overflow: 'hidden' }} >
-                <img className="thumbnail-image" src={props.videos?.thumbnail || '/vite.svg'} alt="" style={{ flex: 1,height: '100%', width: '100%', objectFit: 'cover', marginRight: '10px' }} />
-            <div className="card-details" style={{ flex: 1, padding: '8px' }}>
-                <div className="title" style={{ fontWeight: 'bold', marginBottom: '5px', fontSize: '14px', color: '#333333', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{props.videos?.title || "Default Title"}</div>
-                <div className="description" style={{ marginBottom: '5px', fontSize: '12px', color: '#666666', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{props.videos?.description || "Default Description"}</div>
-            </div>
-                <div className="avatar" style={{ display: 'flex', alignItems: 'center' }} onClick={SendToPlayListUserAcc}>
-                    <img src={props.videoOwner?.avatar || '/vite.svg'} alt="Avatar" style={{ height: '20px', width: '20px', borderRadius: '50%', marginRight: '5px' }} />
-                    <div className="username" style={{ fontSize: '12px', color: '#888888' }}>{props.videoOwner?.username || "Default Username"}</div>
+            <div onClick={handleClick} style={{ height: '180px', width: '100%', display: 'flex', alignItems: 'center', borderRadius: '5px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', backgroundColor: '#ffffff', overflow: 'hidden' }} >
+                <img className="thumbnail-image" src={props.videos?.thumbnail || '/vite.svg'} alt="" style={{ flex: 1, height: '100%', minWidth: '350px', maxWidth: '380px', objectFit:'cover', marginRight: '10px' }} />
+                <div className="card-details" style={{ flex: 1, padding: '8px' }}>
+                    <div className="title" style={{ fontWeight: 'bold', marginBottom: '5px', fontSize: '14px', color: '#333333', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{props.videos?.title || "Default Title"}</div>
+                    <div className="description" style={{ marginBottom: '5px', fontSize: '12px', color: '#666666', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{props.videos?.description || "Default Description"}</div>
+                    <div className="avatar" style={{ display: 'flex', alignItems: 'center', marginTop: '5px' }} onClick={SendToPlayListUserAcc}>
+                        <img src={props.videoOwner?.avatar || '/vite.svg'} alt="Avatar" style={{ height: '20px', width: '20px', borderRadius: '50%', marginRight: '5px' }} />
+                        <div className="username" style={{ fontSize: '12px', color: '#888888' }}>{props.videoOwner?.username || "Default Username"}</div>
+                    </div>
+                    <div className="details" style={{ display: 'flex', alignItems: 'center', marginTop: '5px' }}>
+                        <div className="date" style={{ fontSize: '10px', color: '#999999', marginRight: "14px" }}>{formattedTimeDifference || "Default Date"}</div>
+                        <div className="duration" style={{ fontSize: '10px', color: '#999999' }}>{`${formattedDuration}...` || "Default duration"}</div>
+                    </div>
+                    <div className="views" style={{ fontSize: '10px', color: '#999999', marginTop: '5px' }}>{`${props.videos?.views }  views.`|| 0}</div>
                 </div>
-                <div className="details" style={{ display: 'flex', alignItems: 'center', }}>
-                    <div className="date" style={{ fontSize: '10px', color: '#999999', marginRight:"14px"}}>{formattedTimeDifference || "Default Date"}</div>
-                    <div className="duration" style={{ fontSize: '10px', color: '#999999' }}>{formattedDuration || "Default duration"}</div>
-                </div>
-                <div className="views" style={{ fontSize: '10px', color: '#999999' }}>{props.videos?.views || "Default views"}</div>
-               
             </div>
         </div>
+
     );
 }
 
