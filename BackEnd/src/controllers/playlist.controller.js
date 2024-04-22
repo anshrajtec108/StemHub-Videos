@@ -68,6 +68,7 @@ const getUserPlaylists = asyncHandler(async (req, res) => {
 
 const getPlaylistById = asyncHandler(async (req, res) => {
     const { playlistId } = req.params;
+    console.log("playlistId", playlistId);
     // TODO: the data is coming but use $project to mange the data to send it 
     try {
         const playlistItems = await Playlist.aggregate([

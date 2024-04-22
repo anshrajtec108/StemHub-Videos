@@ -37,7 +37,7 @@ export const URLS = {
     //PlayList
     createPlaylist:"/playlist",
     getPlatlistChannel_User:"/playlist/user/",
-    getPlaylistById:"/playlist/",
+    getPlaylistById:"/playlist",
     updateplaylistInfo:"/playlist/",
     deletePlaylistById:"/playlist/",
     removeVideoPlayList: "/playlist/remove/", //add it /playlist/remove/playlistID/VideoId

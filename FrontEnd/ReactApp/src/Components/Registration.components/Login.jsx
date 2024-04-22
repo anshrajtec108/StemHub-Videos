@@ -6,6 +6,8 @@ import './Register.css'
 import { makePostRequest } from '../../services/api';
 import { URLS } from '../../constants/Urls';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { saveUserId, saveUserObj } from '../../store/reducers/user';
 
 
 
@@ -14,24 +16,29 @@ function Login() {
   const [data, setdata] = useState("")
   const [nameData, setNameData] = useState("")
   const [password, setpassword] = useState("")
-
+  let dispatch = useDispatch()
   const handleSubmit = function (e) {
     e.preventDefault()
     console.log("nameData", nameData)
+   
     let sendTheData = {
       [nameData]: data,
       password: password,
     }
+    console.log("sendTheData", sendTheData);
     const login_URL = URLS.userLogin
     makePostRequest(login_URL, {}, sendTheData, {})
       .then((res) => {
         if (res.success) {
           Cookies.set('accessToken', res.data?.accessToken);
+          // dispatch(saveUserObj(res.data.user))
+          // dispatch(saveUserId(res.data.user._id))
+          localStorage.setItem('userObj', JSON.stringify(res.data.user))
           return navigator('/');
           // console.log(res.data)
         }
       }).catch((error) => {
-        alert(`ERROR FROM LOGIN error:${error}`)
+        alert(`ERROR FROM LOGIN error:${error.message}`)
         console.log(error);
       })
   };

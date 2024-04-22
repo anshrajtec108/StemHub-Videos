@@ -49,7 +49,7 @@ function App() {
           element:<Shorts/>
         },
         {
-          path:'/playlist',
+          path:'/playlist/:playlistId',
           element:<PlayList/>
         },
         {

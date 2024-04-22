@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState={
-    userId:'',
+    userId:'default',
     userObj:{}
 }
-const user=createSlice({
+const userSlice =createSlice({
     name:'user',
     initialState,
     reducers:{
@@ -12,7 +12,7 @@ const user=createSlice({
             if(payLoad){
                 return{
                     ...state,
-                    userId:payLoad
+                    userId:payLoad.payload
                 }
             }
         },
@@ -33,6 +33,6 @@ const user=createSlice({
 export const{
     saveUserId,
     saveUserObj
-}=user.actions;
+} = userSlice.actions;
 
-export default user.reducer
+export default userSlice.reducer

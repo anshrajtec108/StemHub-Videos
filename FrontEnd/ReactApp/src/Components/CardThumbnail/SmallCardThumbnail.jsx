@@ -62,7 +62,7 @@ function SmallCardThumbnail(props) {
     return (
         <div className="card-container" style={{ height: '100%', width: '100%', display: 'flex', alignItems: 'center', borderRadius: '5px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', marginTop: "20px", backgroundColor: '#ffffff', overflow: 'hidden' }}>
             <div onClick={handleClick} style={{ height: '180px', width: '100%', display: 'flex', alignItems: 'center', borderRadius: '5px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', backgroundColor: '#ffffff', overflow: 'hidden' }} >
-                <img className="thumbnail-image" src={props.videos?.thumbnail || '/vite.svg'} alt="" style={{ flex: 1, height: '100%', minWidth: '350px', maxWidth: '380px', objectFit:'cover', marginRight: '10px' }} />
+                <img className="thumbnail-image" src={props.videos?.thumbnail || '/vite.svg'} alt="" style={{ flex: 1, height: '100%', minWidth: '350px', maxWidth: '380px', marginRight: '10px' }} />
                 <div className="card-details" style={{ flex: 1, padding: '8px' }}>
                     <div className="title" style={{ fontWeight: 'bold', marginBottom: '5px', fontSize: '14px', color: '#333333', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{props.videos?.title || "Default Title"}</div>
                     <div className="description" style={{ marginBottom: '5px', fontSize: '12px', color: '#666666', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{props.videos?.description || "Default Description"}</div>

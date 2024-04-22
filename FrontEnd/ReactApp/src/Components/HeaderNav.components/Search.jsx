@@ -1,96 +1,82 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { makeGetRequest } from '../../services/api';
 import CardThumbnail from '../CardThumbnail/CardThumbnail';
 import Loader from '../CardThumbnail/Loader';
 import { useParams } from 'react-router-dom';
-var queryVar;
-var newQueryVar;
-function VideoListForSearch(props) {
 
-    console.log("searchQuery",searchQuery);
+function VideoListForSearch({ queryVar, newQueryVar, sortBy, sortType, setSortBy, setSortType }) {
     const [videoList, setVideoList] = useState([]);
     const [page, setPage] = useState(1);
-    const [sortBy, setSortBy] = useState('createdAt');
-    const [sortType, setSortType] = useState('');
     const [loading, setLoading] = useState(true);
-    const [limit, setLimit] = useState(5)
-    const [reload,setReload]=useState(true)
-    // const [prevQuery, setPrevQuery] = useState('');
-   
+    const [limit, setLimit] = useState(5);
+
     const fetchSearchVideoData = async () => {
         try {
-            // if (searchQuery) {
-            //     setQuery(searchQuery)
-            //     return;
-            // } else {
-            //     alert(`the query is required 2`)
-            // }
-            if (queryVar) {
-            console.log('newQueryVar1', newQueryVar);
-            console.log('query1', queryVar);
-                if (newQueryVar){
-                setVideoList([])
-                console.log('videoList', videoList, queryVar);
+            setLoading(true);
+            const res = await makeGetRequest(`/videos/?query=${queryVar}&sortBy=${sortBy}&page=${page}&limit=${limit}&sortType=${sortType}`, {}, {});
+            if (newQueryVar) {
+                setVideoList([]);
+                setPage(1); // Reset page to 1 when performing a new query
             }
-
-                const res = await makeGetRequest(`/videos/?query=${queryVar}&sortBy=${sortBy}&page=${page}&limit=${limit}&sortType=${sortType}`, {}, {});
-                console.log("data", res?.data)
-                if (videoList.length <= 0) {
-                    setVideoList(res.data);
-                } else {
-                    setVideoList((prev) => [...prev, ...res.data]);
-                }
-            }else{
-                alert(`the query is required 3`)
-            }
-
+            setVideoList((prev) => [...prev, ...res.data]);
             setLoading(false);
         } catch (error) {
             console.log(error);
         }
     };
 
-    const handelInfiniteScroll = async () => {
-
-        try {
-            if (
-                window.innerHeight + document.documentElement.scrollTop + 1 >=
-                document.documentElement.scrollHeight
-            ) {
-                setLoading(true);
-                setPage((prev) => prev + 1);
-            }
-        } catch (error) {
-            console.log(error);
+    const handleInfiniteScroll = () => {
+        if (window.innerHeight + document.documentElement.scrollTop + 1 >= document.documentElement.scrollHeight) {
+            setPage((prev) => prev + 1);
         }
     };
+
     useEffect(() => {
         fetchSearchVideoData();
-    }, [page, searchQuery, sortBy, newQueryVar,]);
+    }, [queryVar, sortBy, sortType, page]); // Include queryVar, sortBy, sortType, and page in dependencies
 
     useEffect(() => {
-        window.addEventListener("scroll", handelInfiniteScroll);
-        return () => window.removeEventListener("scroll", handelInfiniteScroll);
+        window.addEventListener("scroll", handleInfiniteScroll);
+        return () => window.removeEventListener("scroll", handleInfiniteScroll);
     }, []);
 
+    const handleSortChange = (e) => {
+        setSortBy(e.target.value);
+    };
+
+    const handleSortTypeChange = (e) => {
+        setSortType(e.target.value === 'Descending' ? 'desc' : 'asc');
+    };
 
     return (
-        <div style={{ "marginTop": "60px" }}>
-            <div>
+        <div style={{ "marginTop": "6px" }}>
+            <div >
+                <div style={{ color: '#ff3300', display: 'flex', justifyContent: 'space-around', backgroundColor:'#9fabbf' ,padding:'8px'}}>
+                    <div>
+                        <label htmlFor="sortBy">Sort By:</label>
+                        <select id="sortBy" value={sortBy} onChange={handleSortChange}>
+                            <option value="createdAt">Created At</option>
+                            <option value="views">Views</option>
+                            {/* Add more options as needed */}
+                        </select>
+                    </div>
+                    <div>
+                        <label htmlFor="sortType">Sort Type:</label>
+                        <select id="sortType" value={sortType} onChange={handleSortTypeChange}>
+                            <option value="Ascending">Ascending</option>
+                            <option value="Descending">Descending</option>
+                        </select>
+                    </div>
+                </div>
                 <div className="holder mx-auto w-10/12 grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
-                    {
-                        videoList ? (
-                            videoList.map((data, index) => (
-                                // {console.log(data.title)}
-                                // <p key={index}>{data}</p>
-                                <CardThumbnail key={index} title={data.title} id={data._id} duration={data.duration} thumbnail={data.thumbnail} updatedAt={data.updatedAt} videoOwner={data.owner} />
-                            ))
-                        ) : (
-                            <p>No videos uploaded</p>
-                        )
-                    }
+                    {videoList.length > 0 ? (
+                        videoList.map((data, index) => (
+                            <CardThumbnail key={index} title={data.title} id={data._id} duration={data.duration} thumbnail={data.thumbnail} updatedAt={data.updatedAt} videoOwner={data.owner} />
+                        ))
+                    ) : (
+                        <p>No videos found</p>
+                    )}
                     {loading && <Loader />}
-
                 </div>
             </div>
         </div>
@@ -99,20 +85,27 @@ function VideoListForSearch(props) {
 
 function Search() {
     const { query, newQuery } = useParams();
-    console.log('newQueryVar2', newQueryVar, 'query', query);
-    queryVar=query
-    newQueryVar=newQuery
-  return (
-      <div>
-          {query ? (
-              <VideoListForSearch  />
+    const [queryVar, setQueryVar] = useState('');
+    const [newQueryVar, setNewQueryVar] = useState(false);
+    const [sortBy, setSortBy] = useState('createdAt');
+    const [sortType, setSortType] = useState('asc');
 
-          ) : (
-              <p onClick={() => alert('The query is required')}>Click to show alert</p>
-          )}
-      </div>
+    useEffect(() => {
+        if (query) {
+            setQueryVar(query);
+            setNewQueryVar(newQuery === 'true');
+        }
+    }, [query, newQuery]);
 
-  )
+    return (
+        <div>
+            {query ? (
+                <VideoListForSearch queryVar={queryVar} newQueryVar={newQueryVar} sortBy={sortBy} sortType={sortType} setSortBy={setSortBy} setSortType={setSortType} />
+            ) : (
+                <p onClick={() => alert('The query is required')}>Click to show alert</p>
+            )}
+        </div>
+    );
 }
 
-export default Search
+export default Search;
