@@ -1,4 +1,4 @@
-import { HomeMaxOutlined, Subscriptions, Tune, VideoCallSharp } from "@mui/icons-material";
+import { History, HomeMaxOutlined, Subscriptions, VideoCallSharp } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./Sidebar.css";
@@ -28,6 +28,11 @@ function SideBar() {
       name: "Subscription",
       icon: <Subscriptions />,
     },
+    {
+      path: "/user/history",
+      name: "History",
+      icon: <History />,
+    }
   ];
   const handleToggleSidebar = () => {
     console.log('handleToggleSidebar');
