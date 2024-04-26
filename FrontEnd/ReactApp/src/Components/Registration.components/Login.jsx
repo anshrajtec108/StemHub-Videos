@@ -31,8 +31,9 @@ function Login() {
       .then((res) => {
         if (res.success) {
           Cookies.set('accessToken', res.data?.accessToken);
-          // dispatch(saveUserObj(res.data.user))
-          // dispatch(saveUserId(res.data.user._id))
+          dispatch(saveUserObj(res.data.user))
+          let userId = res.data.user._id
+          dispatch(saveUserId(userId))
           localStorage.setItem('userObj', JSON.stringify(res.data.user))
           return navigator('/');
           // console.log(res.data)

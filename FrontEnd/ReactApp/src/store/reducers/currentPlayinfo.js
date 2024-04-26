@@ -1,6 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState={
+    IsplayList:false,
+    changeInPlayList:false,
+    changeInHistory:false,
+    isChangeFromHistory:false,
     playList: {},
     video:{},
     rememberMeURL:"",
@@ -12,6 +16,15 @@ const currentPlayInfoSlice=createSlice({
     name:"currentPlayInfo",
     initialState,
     reducers:{
+        saveISPlayList(state,payLoad){
+            console.log('payLoad.payload',payLoad.payload);
+            console.log('state', state);
+            return{
+                ...state,
+                IsplayList: payLoad.payload
+                
+            }
+        },
         savePlayList(state,payLoad){
             let {_id}=payLoad
             if (_id) {
@@ -26,7 +39,7 @@ const currentPlayInfoSlice=createSlice({
             if (payLoad) {
                 return {
                     ...state,
-                    rememberMeURL:payLoad
+                    rememberMeURL: payLoad.payload
             }
         }
         },
@@ -47,7 +60,31 @@ const currentPlayInfoSlice=createSlice({
                 sideBar: !state.sideBar
             }
         }
+        },
+        savechangeInPlayList(state,payLoad){
+            if (payLoad) {
+            return{
+                ...state,
+                changeInPlayList: !state.changeInPlayList
+            }
         }
+        },
+        saveChangeInHistory(state, payLoad) {
+            if (payLoad) {
+                return {
+                    ...state,
+                    changeInHistory: !state.changeInHistory
+                }
+            }
+        },
+        saveisChangeFromHistory(state, payLoad) {
+            if (payLoad) {
+                return {
+                    ...state,
+                    isChangeFromHistory: payLoad.payload
+                }
+            }
+        },
     }
 })
 
@@ -55,7 +92,11 @@ export const {
     savePlayList,
     saveRememberMeURL,
     saveRememberMEObj,
-    savesideBarStatus
+    savesideBarStatus,
+    saveISPlayList,
+    savechangeInPlayList,
+    saveChangeInHistory,
+    saveisChangeFromHistory,
 
 }=currentPlayInfoSlice.actions;
 

@@ -3,15 +3,15 @@ import SmallCardThumbnail from '../CardThumbnail/SmallCardThumbnail.jsx'
 import { useDispatch, useSelector } from "react-redux";
 import { makeGetRequest } from '../../services/api.js';
 import { URLS } from '../../constants/Urls.js';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { savePlayList, saveRememberMeURL } from '../../store/reducers/currentPlayinfo.js';
+import { useNavigate, useParams } from 'react-router-dom';
+import { saveISPlayList, savePlayList, saveRememberMeURL } from '../../store/reducers/currentPlayinfo.js';
 import Loader from '../CardThumbnail/Loader.jsx';
 
 function PlaylistLists() {
   let {playlistId}=useParams()
   const navigate=useNavigate()
   // const { playlistId } = useSearchParams()
-   playlistId ='65b67747a96e52ac6de06187'
+  //  playlistId ='65b67747a96e52ac6de06187'
 
   const [playlistdata, setPlaylistdata] = useState({
     "_id": "65b67747a96e52ac6de06187",
@@ -48,13 +48,15 @@ function PlaylistLists() {
 
   let currentplayInfo = useSelector((store) => store.currentPlayinfo);
   let dispatch = useDispatch()
-
+  let changeInPlayList = currentplayInfo.changeInPlayList
   playlistId = (!playlistId) ? currentplayInfo.Playlist._id : playlistId
   const getPlayListVideos = () => {
     console.log('getPlayListVideos');
     makeGetRequest(`/playlist/${playlistId}`,{},{})
     .then((res)=>{
       console.log('res.data[0]', res.data[0]);
+      dispatch(saveISPlayList(true))
+      // dispatch(savePlayList(res.data[0]))
       setPlaylistdata(res.data[0])
     }).catch((error)=>{
       dispatch(saveRememberMeURL(URL))
@@ -63,7 +65,7 @@ function PlaylistLists() {
   }
   useEffect(()=>{
     getPlayListVideos()
-  },[])
+  },[changeInPlayList])
 
   function SendToPlayListUserAcc(){
     let userId = playlistdata?.playListOwner[0]?._id ;
@@ -99,7 +101,7 @@ function PlaylistLists() {
       </div>
       <div className="thumbnails" style={{ overflowY: 'auto' }}>
         {playlistdata?.videos.map((data, index) => {
-          return <SmallCardThumbnail key={index} videos={data} videoOwner={data.VideoOwner[0]} />;
+          return <SmallCardThumbnail key={index} PlaylistId={playlistdata?._id} videos={data} videoOwner={data.VideoOwner[0]} playListOwnerDetail={playlistdata?.playListOwner[0]} historyPage={false}/>;
         })}
         {/* Add more SmallCardThumbnail components as needed */}
       </div>

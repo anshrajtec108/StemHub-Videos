@@ -378,58 +378,49 @@ const getWatchHistory=asyncHandler(async(req,res)=>{
     let skip = (page - 1) * limit;
     const user = await User.aggregate([
         {
-            $match:{
+            $match: {
                 _id: new mongoose.Types.ObjectId(req.user._id)
             }
         },
         {
-            $lookup:{
-                    from:"videos",
-                    localField:"watchHistory",
-                    foreignField:"_id",
-                    as:"watchHistory",
-                    pipeline:[
-                      
-                        {
-                            $lookup:{
-                                from:"users",
-                                localField:"owner",
-                                foreignField:"_id",
-                                as:"owner",
-                                pipeline:[
-                                    {
-                                        $project:{
-                                            fullName:1,
-                                            username:1,
-                                            avatar:1
-                                        }
+            $unwind: "$watchHistory" // Unwind the watchHistory array
+        },
+        {
+            $lookup: {
+                from: "videos",
+                localField: "watchHistory",
+                foreignField: "_id",
+                as: "watchHistory",
+                pipeline: [
+                    {
+                        $lookup: {
+                            from: "users",
+                            localField: "owner",
+                            foreignField: "_id",
+                            as: "owner",
+                            pipeline: [
+                                {
+                                    $project: {
+                                        fullName: 1,
+                                        username: 1,
+                                        avatar: 1
                                     }
-                                ]
-                            }
-                        },
-                        {
-                            $addFields:{
-                                owner:{
-                                    $first:"$owner"
                                 }
+                            ]
+                        }
+                    },
+                    {
+                        $addFields: {
+                            owner: {
+                                $first: "$owner"
                             }
-                        },
-                       
-                    ]
-                },
-                
-         },
-        {
-            $sort: { updatedAt: -1 }
-        },
-        {
-            $skip: skip
-        },
-        {
-            $limit: limit
-        },
-    
+                        }
+                    }
+                ]
+            }
+        }
     ])
+
 
     let result = user[0]?.watchHistory
     if (!user || !user[0] || !user[0].watchHistory) {
@@ -444,7 +435,16 @@ const getWatchHistory=asyncHandler(async(req,res)=>{
     )
 })
 
-
+const deleteWatchHistory=asyncHandler(async(req,res)=>{
+    const {videoId }=req.params
+    const userId =req.user?._id
+    const watchHistory  = await User.updateOne(
+        { _id: userId },
+        { $pull: { watchHistory: videoId } },
+    )
+    console.log('watchHistory', watchHistory);
+    return res.status(200).json(new ApiResponse(200, watchHistory,"From Watch-History video deleted  "))
+})
 
 export {
     registerUser,
@@ -458,4 +458,5 @@ export {
     updateUsercoverImage,
     getUserChannelProfile,
     getWatchHistory,
+    deleteWatchHistory,
 }

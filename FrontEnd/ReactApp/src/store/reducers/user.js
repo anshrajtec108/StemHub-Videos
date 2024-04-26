@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState={
-    userId:'default',
+    userId:null,
     userObj:{}
 }
 const userSlice =createSlice({
@@ -9,12 +9,12 @@ const userSlice =createSlice({
     initialState,
     reducers:{
         saveUserId(state,payLoad){
-            if(payLoad){
+            console.log('user payLoad :saveUserId ', payLoad);
                 return{
                     ...state,
-                    userId:payLoad.payload
+                    userId: payLoad.payload
                 }
-            }
+            
         },
 
         saveUserObj(state,payLoad){
