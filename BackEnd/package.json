@@ -1,11 +1,11 @@
 {
-  "name": "Ansh_Raj",
+  "name": "Ansh Raj",
   "version": "1.0.0",
   "description": "",
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon -r dotenv/config --experimental-json-modules src/index.js"
+    "dev": "node src/index.js"
   },
   "keywords": [],
   "author": "Ansh Raj",
