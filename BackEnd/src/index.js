@@ -1,59 +1,53 @@
 import dotenv from "dotenv";
 import connectDB from "./db/index.js";
 import { app } from "./app.js";
-import { createServer } from "http"; // Import createServer from the built-in 'http' module
-import { Server } from "socket.io"; // Import Server from 'socket.io'
+import { createServer } from "http";
+import { Server } from "socket.io";
 
-dotenv.config({
-    path: './env'
-});
+dotenv.config();
+
+const port = process.env.PORT || 8000;
+const socketPort = process.env.SOCKET_PORT || 3000;
 
 let server;
 
+// Connect to MongoDB and start Express server
 connectDB()
     .then(() => {
-        server = app.listen(process.env.PORT || 8000, () => {
-            console.log(`Server is running at PORT ${process.env.PORT}`);
+        server = app.listen(port, () => {
+            console.log(`Express server is running at PORT ${port}`);
+        });
+
+        // Start the Socket.IO server
+        const httpServer = createServer(app);
+        const io = new Server(httpServer, {
+            cors: {
+                origin: "*",
+                methods: ["GET", "POST"]
+            }
+        });
+
+        let roomName;
+
+        io.on("connection", (socket) => {
+            console.log("A new client connected");
+
+            socket.on('joinRoom', (room) => {
+                socket.join(room);
+                roomName = room;
+                console.log(`Client joined room: ${room}`);
+            });
+
+            socket.on("liveComment", (data) => {
+                console.log("Received live comment:", data);
+                io.to(roomName).emit("sendLiveComment", data);
+            });
+        });
+
+        httpServer.listen(socketPort, () => {
+            console.log(`Socket.IO server is running on port ${socketPort}`);
         });
     })
     .catch((err) => {
         console.log("MongoDB connection failed:", err);
     });
-
-
-
-
-    
-// Create an HTTP server using the app
-const httpServer = createServer(app);
-
-// Create a new instance of Socket.IO server and attach it to the HTTP server
-const io = new Server(httpServer, {
-    cors: {
-        origin: "*",
-        methods: ["GET", "POST"]
-    }
-});
-let roomName;
-// Event handler for new connections
-io.on("connection", (socket) => {
-    console.log("A new client connected");
-    
-    socket.on('joinRoom', (room) => {
-        socket.join(room);
-        roomName=room // Join the specified room
-        console.log(`Client joined room: ${room}`);
-    });
-
-    // Event listener for 'liveComment'
-    socket.on("liveComment", (data) => {
-        console.log("Received live comment:", data);
-        io.to(roomName).emit("sendLiveComment", data); 
-    });
-});
-
-// Start listening on the server
-const PORT = process.env.SOCKET_PORT || 3000; // Specify a default port for the Socket.IO server
-httpServer.listen(PORT, () => {
-    console.log(`Socket.IO server is running on port ${PORT}`);
-});
