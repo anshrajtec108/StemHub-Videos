@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react'
 import SmallCardThumbnail from '../CardThumbnail/SmallCardThumbnail.jsx'
 import { useDispatch, useSelector } from "react-redux";
 import { makeGetRequest } from '../../services/api.js';
-import { URLS } from '../../constants/Urls.js';
 import { useNavigate, useParams } from 'react-router-dom';
-import { saveISPlayList, savePlayList, saveRememberMeURL } from '../../store/reducers/currentPlayinfo.js';
-import Loader from '../CardThumbnail/Loader.jsx';
+import { saveISPlayList, saveRememberMeURL } from '../../store/reducers/currentPlayinfo.js';
+
 
 function PlaylistLists() {
   let {playlistId}=useParams()

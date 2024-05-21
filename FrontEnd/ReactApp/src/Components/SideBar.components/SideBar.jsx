@@ -1,6 +1,6 @@
 import { History, HomeMaxOutlined, Subscriptions, VideoCallSharp } from "@mui/icons-material";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+
 import "./Sidebar.css";
 import { Menu } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { makePostRequest } from '../../services/api';
-import { useParams } from 'react-router-dom';
+
 
 const LikeButton = (props) => {
     console.log("props.likeCount", typeof (props.likeCount));

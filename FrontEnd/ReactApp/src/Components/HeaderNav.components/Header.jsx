@@ -1,9 +1,9 @@
 import { Menu, SearchOutlined, VideoCallSharp, NotificationsActiveOutlined, Close } from "@mui/icons-material";
 import './Header.css'
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { useNavigate } from "react-router-dom";
-import SideBar from '../SideBar.components/SideBar';
-import { useDispatch, useSelector } from "react-redux";
+
+import { useDispatch, } from "react-redux";
 import { savesideBarStatus } from "../../store/reducers/currentPlayinfo";
 
 
