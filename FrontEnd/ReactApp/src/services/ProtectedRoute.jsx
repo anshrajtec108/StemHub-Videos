@@ -12,6 +12,10 @@ function ProtectedRoute({ Component }) {
             console.log('Please login');
             navigate('/login');
         }
+        // return ()=>{
+        //     Cookies.remove('accessToken')
+        //     console.log('Please login');
+        // }
     }, []);
 
     return (

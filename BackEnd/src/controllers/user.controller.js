@@ -422,11 +422,16 @@ const getWatchHistory=asyncHandler(async(req,res)=>{
     ])
 
 
-    let result = user[0]?.watchHistory
+    let result =[]
     if (!user || !user[0] || !user[0].watchHistory) {
-        result={}
-        throw new ApiError(500,"User or watch history not found.");
+        result=[]
+        // throw new ApiError(500,"User or watch history not found.");
+    }else{
+        for (let i = 0; i < user.length; i++) {
+          result.push(...user[i]?.watchHistory); 
+        }
     }
+    console.log('history result ', result);
     return res.status(200)
     .json(
         // new ApiResponse(200,user[0].watchHistory,"Watch history fetched successfully")

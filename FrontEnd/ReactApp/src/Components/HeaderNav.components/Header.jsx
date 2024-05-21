@@ -94,14 +94,14 @@ function Header(props) {
     <div id="hiddendivinfo" style={{ display: show ? 'block' : 'none', position: 'absolute', zIndex: 999 }}>
       <div id="userinfo">
         <div id="frist">
-          <img src={user.avatar} alt="" />
+          <img src={user?.avatar} alt="" />
           <p id="thex" onClick={handle_userinfo} ><Close /></p>
         </div>
 
-        <h3>{user.fullName}</h3><br></br>
-        <h4>{user.username}</h4><br></br>
-        <h4>{user.email}</h4><br></br>
-        <h3><a href={`/dashboard/${user._id}`} style={{color:'pink'}}>view your channel</a></h3>
+        <h3>{user?.fullName}</h3><br></br>
+        <h4>{user?.username}</h4><br></br>
+        <h4>{user?.email}</h4><br></br>
+        <h3><a href={`/dashboard/${user?._id}`} style={{color:'pink'}}>view your channel</a></h3>
       </div>
     </div></>
   )

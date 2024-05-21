@@ -60,7 +60,7 @@ function VideoListForHome() {
               videoList.map((data, index) => (
                 // {console.log(data.title)}
                 // <p key={index}>{data}</p>
-                <CardThumbnail key={index} createdAt={data.createdAt} mtitle={data.title} id={data._id} duration={data.duration} thumbnail={data.thumbnail} updatedAt={data.updatedAt} videoOwner={data.owner} />
+                <CardThumbnail key={index} createdAt={data.createdAt} title={data.title} id={data._id} duration={data.duration} thumbnail={data.thumbnail} updatedAt={data.updatedAt} videoOwner={data.owner} />
               ))
             ) : (
               <p>No videos uploaded</p>

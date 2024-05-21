@@ -24,8 +24,8 @@ function History() {
             } else {
                 setVideoList((prev) => [...prev, ...res.data]);
             }
-
-            setLoading(false);
+            if(videoList.length>0){
+            setLoading(false);}
         } catch (error) {
             console.log(error);
         }
@@ -54,13 +54,13 @@ function History() {
     useEffect(() => {
         fetchChannelVideoData();
     }, [page, changeInHistory]);
-
+    console.log('videoList', videoList);
     return (
-        <div>
+        <div >
             {videoList.map((data, index) => (
                 <SmallCardThumbnail key={data._id} videos={data} videoOwner={data.owner[0]} historyPage={true} />
             ))}
-            {loading && <p>Loading...</p>}
+            {loading && <p>NO MORE History</p>}
         </div>
     );
 }

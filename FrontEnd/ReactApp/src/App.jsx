@@ -24,6 +24,7 @@ import CommentList from './Components/Comment/Comment.jsx';
 import Search from './Components/HeaderNav.components/Search.jsx';
 import VideoUpload from './Components/CardThumbnail/VideoUpload.jsx';
 import History from './pages/History/History.jsx';
+import RegistrationForm from './Components/Registration.components/RegisterUser.jsx';
 
 
 // import AutoEvent from './Components/testing/AutoEvent.jsx';
@@ -77,6 +78,10 @@ function App() {
     {
       path:'/login',
       element:<Login/>
+    },
+    {
+      path: '/resister',
+      element: <RegistrationForm />
     }
   ])
 

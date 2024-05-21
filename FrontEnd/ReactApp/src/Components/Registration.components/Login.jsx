@@ -30,7 +30,10 @@ function Login() {
     makePostRequest(login_URL, {}, sendTheData, {})
       .then((res) => {
         if (res.success) {
-          Cookies.set('accessToken', res.data?.accessToken);
+          const oneDayInSeconds = 24 * 60 * 60; // One day in seconds
+          const expirationDate = new Date(Date.now() + oneDayInSeconds * 1000); // Current time + one day
+          Cookies.set('accessToken', res.data?.accessToken, { expires: expirationDate });
+
           dispatch(saveUserObj(res.data.user))
           let userId = res.data.user._id
           dispatch(saveUserId(userId))
