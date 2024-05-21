@@ -16,10 +16,16 @@ import test from "./controllers/TestautoEventTest.controller.js";
 
 const app = express();
 
+// app.use(cors({
+//     origin: process.env.CORS_ORIGIN || 'https://videos-hub-frontend.vercel.app',
+//     credentials: true
+// }));
+
 app.use(cors({
-    origin: process.env.CORS_ORIGIN ||'https://videos-hub-frontend.vercel.app',
+    origin: '*',
     credentials: true
 }));
+
 
 app.use(express.json({ limit: "20kb" }));
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
