@@ -21,11 +21,12 @@ const app = express();
 //     credentials: true
 // }));
 
-app.use(cors({
-    origin: 'https://videos-hub-frontend.vercel.app',
-    credentials: true // If you're using cookies or other credentials
-}));
+// app.use(cors({
+//     origin: 'https://videos-hub-frontend.vercel.app',
+//     credentials: true // If you're using cookies or other credentials
+// }));
 
+app.use(cors())
 
 app.use(express.json({ limit: "20kb" }));
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
