@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+
 import userRouter from './routes/user.routes.js';
 import healthcheckRouter from "./routes/healthcheck.routes.js";
 import tweetRouter from "./routes/tweet.routes.js";
@@ -37,9 +38,10 @@ app.use("/api/v1/playlist", playlistRouter);
 app.use("/api/v1/dashboard", dashboardRouter);
 app.use("/api/v1/history", AutoEvent);
 app.use("/api/v1/event", test);
-app.get('*', (req, res, next) => {
-    res.status(200).json({
-        message: 'bad request'
-    })
-})
+
+// Catch-all route
+app.use((req, res, next) => {
+    res.status(404).send('hello');
+});
+
 export { app };
