@@ -18,7 +18,7 @@ const app = express();
 
 // Apply CORS middleware
 app.use(cors({
-    origin: 'https://videos-hub-api.vercel.app/api/v1/',
+    origin: 'https://videos-hub-frontend.vercel.app',
     credentials: true // If you're using cookies or other credentials
 }));
 
