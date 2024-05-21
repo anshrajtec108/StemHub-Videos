@@ -108,28 +108,20 @@ const loginUser = asyncHandler(async (req, res) => {
         throw new ApiError(401, "Invalid username or password");
     }
 
-    const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
-        user._id
-    );
+    const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(user._id);
 
-    const loggedInUser = await User.findById(user._id).select(
-        "-password -refreshToken"
-    );
+    const loggedInUser = await User.findById(user._id).select('-password -refreshToken');
 
-    const options = {
+    const cookieOptions = {
         httpOnly: true,
-        secure: true,
-        // Set allowed origin(s)
-        origin: "https://videos-hub-frontend.vercel.app",
+        secure: true, // Ensure this is true if you're using HTTPS
+        sameSite: 'None', // Required for cross-origin requests
     };
-
-    // Set CORS headers
-    res.setHeader("Access-Control-Allow-Origin", options.origin);
 
     // Set cookies and send response
     res.status(200)
-        .cookie("accessToken", accessToken, options)
-        .cookie("refreshToken", refreshToken, options)
+        .cookie('accessToken', accessToken, cookieOptions)
+        .cookie('refreshToken', refreshToken, cookieOptions)
         .json(
             new ApiResponse(
                 200,
@@ -142,6 +134,8 @@ const loginUser = asyncHandler(async (req, res) => {
             )
         );
 });
+
+export default loginUser;
 
 
 
