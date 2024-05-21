@@ -37,5 +37,9 @@ app.use("/api/v1/playlist", playlistRouter);
 app.use("/api/v1/dashboard", dashboardRouter);
 app.use("/api/v1/history", AutoEvent);
 app.use("/api/v1/event", test);
-
+app.get('*', (req, res, next) => {
+    res.status(200).json({
+        message: 'bad request'
+    })
+})
 export { app };
