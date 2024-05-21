@@ -22,7 +22,7 @@ const app = express();
 // }));
 
 app.use(cors({
-    origin: '*',
+    origin: 'https://videos-hub-frontend.vercel.app',
     credentials: true
 }));
 
