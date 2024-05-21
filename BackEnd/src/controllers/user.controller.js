@@ -87,49 +87,62 @@ const registerUser = asyncHandler( async (req, res) => {
 
 } )
 
-const loginUser=asyncHandler(async(req,res)=>{
+const loginUser = asyncHandler(async (req, res) => {
+    const { email, username, password } = req.body;
 
-    const {email, username, password}=req.body
-
-    if(!username && !email){
-        throw new ApiError(400,"username OR password is requird")
+    if (!username && !email) {
+        throw new ApiError(400, "Username or email is required");
     }
 
-    const user=await User.findOne({
-        $or:[{username},{email}]
-    })
+    const user = await User.findOne({
+        $or: [{ username }, { email }],
+    });
 
-    if(!user){
-        throw new ApiError(400,"User does not exist")
+    if (!user) {
+        throw new ApiError(400, "User does not exist");
     }
 
-   const isPasswordVaild= await user.isPasswordCorrect(password)
+    const isPasswordValid = await user.isPasswordCorrect(password);
 
-   if(! isPasswordVaild){
-         throw new ApiError(401,"Invalid user credentials // password")
+    if (!isPasswordValid) {
+        throw new ApiError(401, "Invalid username or password");
     }
 
-     const {accessToken,refreshToken}=await generateAccessAndRefreshTokens(user._id)
+    const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
+        user._id
+    );
 
-     const loggedInUser=await User.findById(user._id).select("-password -refreshToken")
+    const loggedInUser = await User.findById(user._id).select(
+        "-password -refreshToken"
+    );
 
-     const option={
-        httpOnly:true,
-        secure:true
-     }
-     return res.status(200)
-     .cookie("accessToken",accessToken,option)
-     .cookie("refreshToken",refreshToken,option)
-     .json(
-        new ApiResponse(
-            200,
-            {
-                user:loggedInUser,accessToken,refreshToken
-            },
-            "User logged In Successfully"
-        )
-     )
-})
+    const options = {
+        httpOnly: true,
+        secure: true,
+        // Set allowed origin(s)
+        origin: "https://videos-hub-frontend.vercel.app",
+    };
+
+    // Set CORS headers
+    res.setHeader("Access-Control-Allow-Origin", options.origin);
+
+    // Set cookies and send response
+    res.status(200)
+        .cookie("accessToken", accessToken, options)
+        .cookie("refreshToken", refreshToken, options)
+        .json(
+            new ApiResponse(
+                200,
+                {
+                    user: loggedInUser,
+                    accessToken,
+                    refreshToken,
+                },
+                "User logged in successfully"
+            )
+        );
+});
+
 
 
 const logoutUser=asyncHandler(async(req,res)=>{
