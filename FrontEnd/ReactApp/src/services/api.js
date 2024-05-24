@@ -2,6 +2,17 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 export const BASE_URL = import.meta.env.VITE_BASE_URL
+/* handleImage
+    const handleImage=(e)=>{
+       
+        let file = e.target.files[0];
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload=()=>{
+         setImageData(reader.result)
+        }
+    }
+*/
 
 
 export const makeGetRequest = async (url, queryParams = {}, headers = {}) => {
@@ -9,7 +20,7 @@ export const makeGetRequest = async (url, queryParams = {}, headers = {}) => {
         const response = await axios.get(BASE_URL + url, {
             params: queryParams,
             headers: {
-                Authorization: `Bearer ${Cookies.get('accessToken')}`, // Get access token from cookies
+                 : `Bearer ${Cookies.get('accessToken')}`, // Get access token from cookies
                 ...headers, // Include additional headers if provided
             },
         });
